@@ -234,5 +234,249 @@ public class TicTacToeBoardEntityTest {
     board.addMove(new MoveEntity(pieceToAdd, pointToTake));
     assertTrue(board.isPieceAtPointEqualToPiece(pointToTake, pieceToAdd));
 	}
+	
+	@Test
+  public void testPieceOnPointOneOneOfClonedBoardIsX() {
+    TicTacToePieceEntity pieceToAdd = TicTacToePieceEntity.X;
+    Point pointToTake = new Point(1, 1);
+    MoveEntity move = new MoveEntity(pieceToAdd, pointToTake);
+    board.addMove(move);
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(TicTacToePieceEntity.X, boardClone.getPieceForPoint(pointToTake));
+  }
+  
+  @Test
+  public void testPieceOnPointOneOneOfClonedBoardIsNull() {
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(null, boardClone.getPieceForPoint(new Point(1, 1)));
+  }
+  
+  @Test
+  public void testPieceOnPointOneOneOfClonedBoardIsO() {
+    Point pointToTake = new Point(1, 1);
+    MoveEntity move = new MoveEntity(TicTacToePieceEntity.O, pointToTake);
+    board.addMove(move);
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(TicTacToePieceEntity.O, boardClone.getPieceForPoint(pointToTake));
+  }
+  
+  @Test
+  public void testPieceOnPointOneOneOfClonedBoardIsXAfterReplacement() {
+    Point pointToTake = new Point(1, 1);
+    MoveEntity move = new MoveEntity(TicTacToePieceEntity.O, pointToTake);
+    board.addMove(move);
+    
+    move = new MoveEntity(TicTacToePieceEntity.X, pointToTake);
+    board.addMove(move);
+    
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    
+    assertEquals(TicTacToePieceEntity.X, boardClone.getPieceForPoint(pointToTake));
+  }
+  
+  @Test
+  public void testPieceOnPointOneOneOfClonedBoardIsOAfterReplacement() {
+    Point pointToTake = new Point(1, 1);
+    MoveEntity move = new MoveEntity(TicTacToePieceEntity.X, pointToTake);
+    board.addMove(move);
+    
+    move = new MoveEntity(TicTacToePieceEntity.O, pointToTake);
+    board.addMove(move);
+    
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    
+    assertEquals(TicTacToePieceEntity.O, boardClone.getPieceForPoint(pointToTake));
+  }
+	
+	@Test
+  public void testXPointsCountForClonedBoardIsOne() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(1, boardClone.getNumberOfXPiecesOnTheBoard());
+  }
+  
+  @Test
+  public void testXPointsCountForClonedBoardIsTwo() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(2, boardClone.getNumberOfXPiecesOnTheBoard());
+  }
+  
+  @Test
+  public void testXPointsCountForClonedBoardIsTwoAfterAddingAnOPiece() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(2, 2)));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(2, boardClone.getNumberOfXPiecesOnTheBoard());
+  }
+  
+  @Test
+  public void testXPointsCountForClonedBoardIsOneAfterReplacingAnXPieceWithAnOPiece() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1)));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(1, boardClone.getNumberOfXPiecesOnTheBoard());
+  }
+  
+  @Test
+  public void testXPointsForClonedBoardContainsPointOneOne() {
+    Point pointToTake = new Point(1, 1);
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, pointToTake));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertTrue(boardClone.doXPointsContainPoint(pointToTake));
+  }
+  
+  @Test
+  public void testXPointsForClonedBoardContainsPointsZeroZeroAndOneOne() {
+    Point firstPointToTake = new Point(0, 0);
+    Point secondPointToTake = new Point(1, 1);
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, firstPointToTake));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, secondPointToTake));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertTrue(boardClone.doXPointsContainPoint(firstPointToTake));
+    assertTrue(boardClone.doXPointsContainPoint(secondPointToTake));
+  }
+  
+  @Test
+  public void testOPointsCountForClonedBoardIsOne() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1)));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(1, boardClone.getNumberOfOPiecesOnTheBoard());
+  }
+  
+  @Test
+  public void testOPointsCountForClonedBoardIsTwo() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1)));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(2, boardClone.getNumberOfOPiecesOnTheBoard());
+  }
+  
+  @Test
+  public void testOPointsCountForClonedBoardIsTwoAfterAddingAnXPiece() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 2)));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(2, boardClone.getNumberOfOPiecesOnTheBoard());
+  }
+  
+  @Test
+  public void testOPointsCountForClonedBoardIsOneAfterReplacingAnOPieceWithAnXPiece() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(1, boardClone.getNumberOfXPiecesOnTheBoard());
+  }
+  
+  @Test
+  public void testOPointsForClonedBoardContainsPointOneOne() {
+    Point pointToTake = new Point(1, 1);
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, pointToTake));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertTrue(boardClone.doOPointsContainPoint(pointToTake));
+  }
+  
+  @Test
+  public void testOPointsForClonedBoardContainsPointsZeroZeroAndOneOne() {
+    Point firstPointToTake = new Point(0, 0);
+    Point secondPointToTake = new Point(1, 1);
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, firstPointToTake));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, secondPointToTake));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertTrue(boardClone.doOPointsContainPoint(firstPointToTake));
+    assertTrue(boardClone.doOPointsContainPoint(secondPointToTake));
+  }
+  
+  @Test
+  public void testNumberOfRowsOnClonedBoardIs3() {
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(3, boardClone.getNumberOfRows());
+  }
+  
+  @Test
+  public void testNumberOfColumnsOnClonedBoardIs3() {
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertEquals(3, boardClone.getNumberOfColumns());
+  }
+  
+  @Test
+  public void testClonedBoardIsEmpty() {
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertTrue(boardClone.isEmpty());
+  }
+  
+  @Test
+  public void testClonedBoardIsNotEmpty() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertFalse(boardClone.isEmpty());
+  }
+  
+  @Test
+  public void testPointOneOneOnClonedBoardIsTaken() {
+    Point pointToTake = new Point(1, 1);
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, pointToTake));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertTrue(boardClone.isPointTaken(pointToTake));
+  }
+  
+  @Test
+  public void testClonedBoardIsNotFullWithOnePieceShyOfBeingAFullBoard() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 2)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 2)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 1)));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertFalse(boardClone.isFull());
+  }
+  
+  @Test
+  public void testClonedBoardIsFull() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 2)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 2)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 2)));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertTrue(boardClone.isFull());
+  }
+  
+  @Test
+  public void testPieceAtPointOnClonedBoardIsX() {
+    Point pointToTake = new Point(1, 1);
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, pointToTake));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertTrue(boardClone.isPieceAtPointXPiece(pointToTake));
+  }
+  
+  @Test
+  public void testPieceAtPointOnClonedBoardIsO() {
+    Point pointToTake = new Point(1, 1);
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, pointToTake));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertTrue(boardClone.isPieceAtPointOPiece(pointToTake));
+  }
+  
+  @Test
+  public void testPieceAtPointOnClonedBoardIsEqualToPiece() {
+    TicTacToePieceEntity pieceToAdd = TicTacToePieceEntity.X;
+    Point pointToTake = new Point(1, 1);
+    board.addMove(new MoveEntity(pieceToAdd, pointToTake));
+    TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
+    assertTrue(boardClone.isPieceAtPointEqualToPiece(pointToTake, pieceToAdd));
+  }
 
 }

@@ -19,11 +19,50 @@ public class TicTacToeBoardEntity implements Cloneable {
     xPoints = new ArrayList<Point>(5);
     oPoints = new ArrayList<Point>(5);
     takenPoints = new ArrayList<Point>(9);
+    initializeEmptyPoints();
+  }
+  
+  private void initializeEmptyPoints() {
     emptyPoints = new ArrayList<Point>(9);
-    
     for (int row = 0; row < numberOfRows; row++)
       for (int column = 0; column < numberOfColumns; column++)
         emptyPoints.add(new Point(row, column));
+  }
+  
+  public TicTacToeBoardEntity(TicTacToeBoardEntity boardToClone) {
+    board = boardToClone.board.clone();
+    xPoints = getCloneOfXPointsFromBoard(boardToClone);
+    oPoints = getCloneOfOPointsFromBoard(boardToClone);
+    takenPoints = getCloneOfTakenPointsFromBoard(boardToClone);
+    emptyPoints = getCloneOfEmptyPointsFromBoard(boardToClone);
+  }
+  
+  private List<Point> getCloneOfXPointsFromBoard(TicTacToeBoardEntity board) {
+    List<Point> xPointsClone = new ArrayList<Point>();
+    for (Point xPointToClone : board.xPoints)
+      xPointsClone.add(new Point(xPointToClone));
+    return xPointsClone;
+  }
+  
+  private List<Point> getCloneOfOPointsFromBoard(TicTacToeBoardEntity board) {
+    List<Point> oPointsClone = new ArrayList<Point>();
+    for (Point oPointToClone : board.oPoints)
+      oPointsClone.add(new Point(oPointToClone));
+    return oPointsClone;
+  }
+  
+  private List<Point>getCloneOfTakenPointsFromBoard(TicTacToeBoardEntity board) {
+    List<Point> takenPointsClone = new ArrayList<Point>();
+    for (Point takenPointToClone : board.takenPoints)
+      takenPointsClone.add(new Point(takenPointToClone));
+    return takenPointsClone;
+  }
+  
+  private List<Point> getCloneOfEmptyPointsFromBoard(TicTacToeBoardEntity board) {
+    List<Point> emptyPointsClone = new ArrayList<Point>();
+    for (Point emptyPointToClone : board.emptyPoints)
+      emptyPointsClone.add(new Point(emptyPointToClone));
+    return emptyPointsClone;
   }
   
   public void addMove(MoveEntity move) {
@@ -102,14 +141,6 @@ public class TicTacToeBoardEntity implements Cloneable {
     if (isPointTaken(point))
       return getPieceForPoint(point) == piece;
     return false;
-  }
-  
-  @Override
-  protected Object clone() throws CloneNotSupportedException {
-    TicTacToeBoardEntity boardClone = (TicTacToeBoardEntity)super.clone();
-    boardClone.board = board.clone();
-    
-    return boardClone;
   }
   
 }
