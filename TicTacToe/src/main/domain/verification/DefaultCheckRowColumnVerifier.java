@@ -3,16 +3,9 @@ package main.domain.verification;
 import java.awt.Point;
 
 import main.domain.entities.MoveEntity;
-import main.domain.entities.TicTacToeBoardEntity;
 import main.domain.verification.interfaces.CheckRowColumnVerifier;
 
 public class DefaultCheckRowColumnVerifier implements CheckRowColumnVerifier {
-  
-  private TicTacToeBoardEntity board;
-  
-  public DefaultCheckRowColumnVerifier(TicTacToeBoardEntity board) {
-    this.board = board;
-  }
 
   @Override
   public boolean shouldCheckWinForFirstRowForMove(MoveEntity move) {

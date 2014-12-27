@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Point;
 
 import main.domain.entities.MoveEntity;
-import main.domain.entities.TicTacToeBoardEntity;
 import main.domain.entities.TicTacToePieceEntity;
 import main.domain.verification.DefaultCheckRowColumnVerifier;
 import main.domain.verification.interfaces.CheckRowColumnVerifier;
@@ -15,13 +14,11 @@ import org.junit.Test;
 
 public class DefaultCheckRowColumnVerifierTest {
   
-  private TicTacToeBoardEntity board;
   private CheckRowColumnVerifier defaultCheckRowColumnVerifier;
 
   @Before
   public void setUp() throws Exception {
-    board = new TicTacToeBoardEntity();
-    defaultCheckRowColumnVerifier = new DefaultCheckRowColumnVerifier(board);
+    defaultCheckRowColumnVerifier = new DefaultCheckRowColumnVerifier();
   }
 
   @Test
