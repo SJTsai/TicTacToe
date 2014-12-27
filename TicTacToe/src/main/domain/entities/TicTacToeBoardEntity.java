@@ -1,10 +1,10 @@
-package domain.entities;
+package main.domain.entities;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicTacToeBoardEntity {
+public class TicTacToeBoardEntity implements Cloneable {
 
   private TicTacToePieceEntity[][] board;
   private List<Point> xPoints;
@@ -102,6 +102,14 @@ public class TicTacToeBoardEntity {
     if (isPointTaken(point))
       return getPieceForPoint(point) == piece;
     return false;
+  }
+  
+  @Override
+  protected Object clone() throws CloneNotSupportedException {
+    TicTacToeBoardEntity boardClone = (TicTacToeBoardEntity)super.clone();
+    boardClone.board = board.clone();
+    
+    return boardClone;
   }
   
 }

@@ -1,10 +1,9 @@
-package domain.entities.tests;
+package tests.domain.entities;
 
 import static org.junit.Assert.*;
+import main.domain.entities.TicTacToePieceEntity;
 
 import org.junit.Test;
-
-import domain.entities.TicTacToePieceEntity;
 
 public class TicTacToePieceEntityTest {
 

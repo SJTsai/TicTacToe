@@ -1,13 +1,13 @@
-package domain.entities.tests;
+package tests.domain.entities;
 
 import static org.junit.Assert.*;
 
 import java.awt.Point;
 
-import org.junit.Test;
+import main.domain.entities.MoveEntity;
+import main.domain.entities.TicTacToePieceEntity;
 
-import domain.entities.MoveEntity;
-import domain.entities.TicTacToePieceEntity;
+import org.junit.Test;
 
 public class MoveEntityTest {
   

@@ -1,4 +1,4 @@
-package domain.entities;
+package main.domain.entities;
 
 public enum TicTacToePieceEntity {
   
