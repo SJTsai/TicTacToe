@@ -26,9 +26,11 @@ public class TicTacToeBoardEntity {
         emptyPoints.add(new Point(row, column));
   }
   
-  public void addPieceToPoint(TicTacToePieceEntity piece, Point pointToTake) {
-    board[pointToTake.x][pointToTake.y] = piece;
-    if (piece == TicTacToePieceEntity.X) {
+  public void addMove(MoveEntity move) {
+    Point pointToTake = move.getPoint();
+    TicTacToePieceEntity pieceToAdd = move.getPiece();
+    board[pointToTake.x][pointToTake.y] = pieceToAdd;
+    if (pieceToAdd == TicTacToePieceEntity.X) {
       if (oPoints.contains(pointToTake))
         oPoints.remove(pointToTake);
       xPoints.add(pointToTake);
@@ -82,6 +84,24 @@ public class TicTacToeBoardEntity {
   
   public boolean isFull() {
     return emptyPoints.size() == 0;
+  }
+  
+  public boolean isPieceAtPointXPiece(Point point) {
+    if (isPointTaken(point))
+        return getPieceForPoint(point) == TicTacToePieceEntity.X;
+    return false;
+  }
+  
+  public boolean isPieceAtPointOPiece(Point point) {
+    if (isPointTaken(point))
+        return getPieceForPoint(point) == TicTacToePieceEntity.O;
+    return false;
+  }
+  
+  public boolean isPieceAtPointEqualToPiece(Point point, TicTacToePieceEntity piece) {
+    if (isPointTaken(point))
+      return getPieceForPoint(point) == piece;
+    return false;
   }
   
 }

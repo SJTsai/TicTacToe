@@ -7,6 +7,7 @@ import java.awt.Point;
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.entities.MoveEntity;
 import domain.entities.TicTacToeBoardEntity;
 import domain.entities.TicTacToePieceEntity;
 
@@ -21,9 +22,11 @@ public class TicTacToeBoardEntityTest {
 
 	@Test
 	public void testPieceOnPointOneOneIsX() {
-	  Point pointToAddTo = new Point(1, 1);
-		board.addPieceToPoint(TicTacToePieceEntity.X, pointToAddTo);
-		assertEquals(TicTacToePieceEntity.X, board.getPieceForPoint(pointToAddTo));
+	  TicTacToePieceEntity pieceToAdd = TicTacToePieceEntity.X;
+	  Point pointToTake = new Point(1, 1);
+	  MoveEntity move = new MoveEntity(pieceToAdd, pointToTake);
+		board.addMove(move);
+		assertEquals(TicTacToePieceEntity.X, board.getPieceForPoint(pointToTake));
 	}
 	
 	@Test
@@ -33,117 +36,126 @@ public class TicTacToeBoardEntityTest {
 	
 	@Test
 	public void testPieceOnPointOneOneIsO() {
-	  Point pointToAddTo = new Point(1, 1);
-	  board.addPieceToPoint(TicTacToePieceEntity.O, pointToAddTo);
-	  assertEquals(TicTacToePieceEntity.O, board.getPieceForPoint(pointToAddTo));
+	  Point pointToTake = new Point(1, 1);
+	  MoveEntity move = new MoveEntity(TicTacToePieceEntity.O, pointToTake);
+	  board.addMove(move);
+	  assertEquals(TicTacToePieceEntity.O, board.getPieceForPoint(pointToTake));
 	}
 	
 	@Test
 	public void testPieceOnPointOneOneIsXAfterReplacement() {
-	  Point pointToAddTo = new Point(1, 1);
-    board.addPieceToPoint(TicTacToePieceEntity.O, pointToAddTo);
-    board.addPieceToPoint(TicTacToePieceEntity.X, pointToAddTo);
-    assertEquals(TicTacToePieceEntity.X, board.getPieceForPoint(pointToAddTo));
+	  Point pointToTake = new Point(1, 1);
+	  MoveEntity move = new MoveEntity(TicTacToePieceEntity.O, pointToTake);
+    board.addMove(move);
+    
+    move = new MoveEntity(TicTacToePieceEntity.X, pointToTake);
+    board.addMove(move);
+    
+    assertEquals(TicTacToePieceEntity.X, board.getPieceForPoint(pointToTake));
 	}
 	
 	@Test
 	public void testPieceOnPointOneOneIsOAfterReplacement() {
-    Point pointToAddTo = new Point(1, 1);
-    board.addPieceToPoint(TicTacToePieceEntity.X, pointToAddTo);
-    board.addPieceToPoint(TicTacToePieceEntity.O, pointToAddTo);
-    assertEquals(TicTacToePieceEntity.O, board.getPieceForPoint(pointToAddTo));
+    Point pointToTake = new Point(1, 1);
+    MoveEntity move = new MoveEntity(TicTacToePieceEntity.X, pointToTake);
+    board.addMove(move);
+    
+    move = new MoveEntity(TicTacToePieceEntity.O, pointToTake);
+    board.addMove(move);
+    
+    assertEquals(TicTacToePieceEntity.O, board.getPieceForPoint(pointToTake));
   }
 	
 	@Test
 	public void testXPointsCountIsOne() {
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(1, 1));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
 	  assertEquals(1, board.getNumberOfXPiecesOnTheBoard());
 	}
 	
 	@Test
   public void testXPointsCountIsTwo() {
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(0, 0));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(1, 1));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
     assertEquals(2, board.getNumberOfXPiecesOnTheBoard());
   }
 	
 	@Test
   public void testXPointsCountIsTwoAfterAddingAnOPiece() {
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(0, 0));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(1, 1));
-    board.addPieceToPoint(TicTacToePieceEntity.O, new Point(2, 2));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 0)));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(2, 2)));
     assertEquals(2, board.getNumberOfXPiecesOnTheBoard());
   }
 	
 	@Test
   public void testXPointsCountIsOneAfterReplacingAnXPieceWithAnOPiece() {
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(0, 0));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(1, 1));
-    board.addPieceToPoint(TicTacToePieceEntity.O, new Point(1, 1));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1)));
     assertEquals(1, board.getNumberOfXPiecesOnTheBoard());
   }
 	
 	@Test
 	public void testXPointsContainsPointOneOne() {
-	  Point pointToAddTo = new Point(1, 1);
-	  board.addPieceToPoint(TicTacToePieceEntity.X, pointToAddTo);
-    assertTrue(board.doXPointsContainPoint(pointToAddTo));
+	  Point pointToTake = new Point(1, 1);
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, pointToTake));
+    assertTrue(board.doXPointsContainPoint(pointToTake));
 	}
 	
 	@Test
 	public void testXPointsContainsPointsZeroZeroAndOneOne() {
-	  Point firstPointToAddTo = new Point(0, 0);
-	  Point secondPointToAddTo = new Point(1, 1);
-    board.addPieceToPoint(TicTacToePieceEntity.X, firstPointToAddTo);
-    board.addPieceToPoint(TicTacToePieceEntity.X, secondPointToAddTo);
-    assertTrue(board.doXPointsContainPoint(firstPointToAddTo));
-    assertTrue(board.doXPointsContainPoint(secondPointToAddTo));
+	  Point firstPointToTake = new Point(0, 0);
+	  Point secondPointToTake = new Point(1, 1);
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, firstPointToTake));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, secondPointToTake));
+    assertTrue(board.doXPointsContainPoint(firstPointToTake));
+    assertTrue(board.doXPointsContainPoint(secondPointToTake));
 	}
 	
 	@Test
   public void testOPointsCountIsOne() {
-    board.addPieceToPoint(TicTacToePieceEntity.O, new Point(1, 1));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1)));
     assertEquals(1, board.getNumberOfOPiecesOnTheBoard());
   }
 	
 	@Test
   public void testOPointsCountIsTwo() {
-    board.addPieceToPoint(TicTacToePieceEntity.O, new Point(0, 0));
-    board.addPieceToPoint(TicTacToePieceEntity.O, new Point(1, 1));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1)));
     assertEquals(2, board.getNumberOfOPiecesOnTheBoard());
   }
 	
 	@Test
   public void testOPointsCountIsTwoAfterAddingAnXPiece() {
-    board.addPieceToPoint(TicTacToePieceEntity.O, new Point(0, 0));
-    board.addPieceToPoint(TicTacToePieceEntity.O, new Point(1, 1));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(2, 2));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(0, 0)));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1)));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 2)));
     assertEquals(2, board.getNumberOfOPiecesOnTheBoard());
   }
 	
 	@Test
   public void testOPointsCountIsOneAfterReplacingAnOPieceWithAnXPiece() {
-    board.addPieceToPoint(TicTacToePieceEntity.O, new Point(0, 0));
-    board.addPieceToPoint(TicTacToePieceEntity.O, new Point(1, 1));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(1, 1));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
     assertEquals(1, board.getNumberOfOPiecesOnTheBoard());
   }
 	
 	@Test
   public void testOPointsContainsPointOneOne() {
-    Point pointToAddTo = new Point(1, 1);
-    board.addPieceToPoint(TicTacToePieceEntity.O, pointToAddTo);
-    assertTrue(board.doOPointsContainPoint(pointToAddTo));
+    Point pointToTake = new Point(1, 1);
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, pointToTake));
+    assertTrue(board.doOPointsContainPoint(pointToTake));
   }
 	
 	@Test
   public void testOPointsContainsPointsZeroZeroAndOneOne() {
-    Point firstPointToAddTo = new Point(0, 0);
-    Point secondPointToAddTo = new Point(1, 1);
-    board.addPieceToPoint(TicTacToePieceEntity.O, firstPointToAddTo);
-    board.addPieceToPoint(TicTacToePieceEntity.O, secondPointToAddTo);
-    assertTrue(board.doOPointsContainPoint(firstPointToAddTo));
-    assertTrue(board.doOPointsContainPoint(secondPointToAddTo));
+    Point firstPointToTake = new Point(0, 0);
+    Point secondPointToTake = new Point(1, 1);
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, firstPointToTake));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, secondPointToTake));
+    assertTrue(board.doOPointsContainPoint(firstPointToTake));
+    assertTrue(board.doOPointsContainPoint(secondPointToTake));
   }
 	
 	@Test
@@ -163,42 +175,64 @@ public class TicTacToeBoardEntityTest {
 	
 	@Test
 	public void testBoardIsNotEmpty() {
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(1, 1));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
 	  assertFalse(board.isEmpty());
 	}
 	
 	@Test
 	public void testPointOneOneIsTaken() {
-	  Point pointToAddTo = new Point(1, 1);
-	  board.addPieceToPoint(TicTacToePieceEntity.X, pointToAddTo);
-	  assertTrue(board.isPointTaken(pointToAddTo));
+	  Point pointToTake = new Point(1, 1);
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, pointToTake));
+	  assertTrue(board.isPointTaken(pointToTake));
 	}
 	
 	@Test
 	public void testBoardIsNotFullWithOnePieceShyOfBeingAFullBoard() {
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(0, 0));
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(0, 1));
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(0, 2));
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(1, 0));
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(1, 1));
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(1, 2));
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(2, 0));
-	  board.addPieceToPoint(TicTacToePieceEntity.X, new Point(2, 1));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 0)));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 1)));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 2)));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 0)));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 2)));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 0)));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 1)));
 	  assertFalse(board.isFull());
 	}
 	
 	@Test
   public void testBoardIsFull() {
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(0, 0));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(0, 1));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(0, 2));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(1, 0));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(1, 1));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(1, 2));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(2, 0));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(2, 1));
-    board.addPieceToPoint(TicTacToePieceEntity.X, new Point(2, 2));
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 2)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 2)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 2)));
     assertTrue(board.isFull());
   }
+	
+	@Test
+	public void testPieceAtPointIsX() {
+	  Point pointToTake = new Point(1, 1);
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.X, pointToTake));
+	  assertTrue(board.isPieceAtPointXPiece(pointToTake));
+	}
+	
+	@Test
+	public void testPieceAtPointIsO() {
+	  Point pointToTake = new Point(1, 1);
+	  board.addMove(new MoveEntity(TicTacToePieceEntity.O, pointToTake));
+    assertTrue(board.isPieceAtPointOPiece(pointToTake));
+	}
+	
+	@Test
+	public void testPieceAtPointIsEqualToPiece() {
+	  TicTacToePieceEntity pieceToAdd = TicTacToePieceEntity.X;
+	  Point pointToTake = new Point(1, 1);
+    board.addMove(new MoveEntity(pieceToAdd, pointToTake));
+    assertTrue(board.isPieceAtPointEqualToPiece(pointToTake, pieceToAdd));
+	}
 
 }
