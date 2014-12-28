@@ -12,17 +12,21 @@ import main.domain.verification.interfaces.WinnerVerifier;
 
 public class DefaultWinnerVerifier implements WinnerVerifier {
   
-  private TicTacToeBoardEntity board;
   private CheckRowColumnVerifier checkRowColumnVerifier;
+  private TicTacToeBoardEntity board;
   private TicTacToePieceEntity lastPieceAdded;
   
-  public DefaultWinnerVerifier(TicTacToeBoardEntity board, CheckRowColumnVerifier checkRowColumnVerifier) {
-    this.board = board;
+  public DefaultWinnerVerifier() {
+    super();
+  }
+  
+  public DefaultWinnerVerifier(CheckRowColumnVerifier checkRowColumnVerifier) {
     this.checkRowColumnVerifier = checkRowColumnVerifier;
   }
 
   @Override
-  public boolean verifyWinForBoardAndLastMoveMade(MoveEntity lastMoveMade) {
+  public boolean verifyWinForBoardAndLastMoveMade(TicTacToeBoardEntity board, MoveEntity lastMoveMade) {
+    this.board = board;
     this.lastPieceAdded = lastMoveMade.getPiece();
     
     boolean isWin = false;

@@ -25,7 +25,7 @@ public class DefaultWinnerVerifierTest {
   public void setUp() {
     board = new TicTacToeBoardEntity();
     defaultCheckRowColumnVerifier = new DefaultCheckRowColumnVerifier();
-    defaultWinnerVerifier = new DefaultWinnerVerifier(board, defaultCheckRowColumnVerifier);
+    defaultWinnerVerifier = new DefaultWinnerVerifier(defaultCheckRowColumnVerifier);
   }
 
   @Test
@@ -34,7 +34,7 @@ public class DefaultWinnerVerifierTest {
     board.addMove(moveToVerifyWin);
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 1)));
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 2)));
-    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(moveToVerifyWin));
+    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(board, moveToVerifyWin));
   }
   
   @Test
@@ -43,7 +43,7 @@ public class DefaultWinnerVerifierTest {
     board.addMove(moveToVerifyWin);
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 0)));
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 0)));
-    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(moveToVerifyWin));
+    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(board, moveToVerifyWin));
   }
   
   @Test
@@ -52,7 +52,7 @@ public class DefaultWinnerVerifierTest {
     board.addMove(moveToVerifyWin);
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 0)));
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 2)));
-    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(moveToVerifyWin));
+    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(board, moveToVerifyWin));
   }
   
   @Test
@@ -61,7 +61,7 @@ public class DefaultWinnerVerifierTest {
     board.addMove(moveToVerifyWin);
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 1)));
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 1)));
-    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(moveToVerifyWin));
+    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(board, moveToVerifyWin));
   }
   
   @Test
@@ -70,7 +70,7 @@ public class DefaultWinnerVerifierTest {
     board.addMove(moveToVerifyWin);
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 1)));
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 2)));
-    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(moveToVerifyWin));
+    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(board, moveToVerifyWin));
   }
   
   @Test
@@ -79,7 +79,7 @@ public class DefaultWinnerVerifierTest {
     board.addMove(moveToVerifyWin);
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 2)));
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 2)));
-    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(moveToVerifyWin));
+    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(board, moveToVerifyWin));
   }
   
   @Test
@@ -88,7 +88,7 @@ public class DefaultWinnerVerifierTest {
     board.addMove(moveToVerifyWin);
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 0)));
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 2)));
-    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(moveToVerifyWin));
+    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(board, moveToVerifyWin));
   }
   
   @Test
@@ -97,7 +97,7 @@ public class DefaultWinnerVerifierTest {
     board.addMove(moveToVerifyWin);
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 2)));
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 0)));
-    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(moveToVerifyWin));
+    assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(board, moveToVerifyWin));
   }
 
 }
