@@ -16,10 +16,6 @@ public class DefaultWinnerVerifier implements WinnerVerifier {
   private TicTacToeBoardEntity board;
   private TicTacToePieceEntity lastPieceAdded;
   
-  public DefaultWinnerVerifier() {
-    super();
-  }
-  
   public DefaultWinnerVerifier(CheckRowColumnVerifier checkRowColumnVerifier) {
     this.checkRowColumnVerifier = checkRowColumnVerifier;
   }
