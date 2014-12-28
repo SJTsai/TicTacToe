@@ -34,7 +34,7 @@ public class TicTacToeBoardEntity implements Cloneable {
     xPoints = getCloneOfXPointsFromBoard(boardToClone);
     oPoints = getCloneOfOPointsFromBoard(boardToClone);
     takenPoints = getCloneOfTakenPointsFromBoard(boardToClone);
-    emptyPoints = getCloneOfEmptyPointsFromBoard(boardToClone);
+    emptyPoints = boardToClone.getEmptyPointsClone();
   }
   
   private List<Point> getCloneOfXPointsFromBoard(TicTacToeBoardEntity board) {
@@ -58,9 +58,9 @@ public class TicTacToeBoardEntity implements Cloneable {
     return takenPointsClone;
   }
   
-  private List<Point> getCloneOfEmptyPointsFromBoard(TicTacToeBoardEntity board) {
+  public List<Point> getEmptyPointsClone() {
     List<Point> emptyPointsClone = new ArrayList<Point>();
-    for (Point emptyPointToClone : board.emptyPoints)
+    for (Point emptyPointToClone : emptyPoints)
       emptyPointsClone.add(new Point(emptyPointToClone));
     return emptyPointsClone;
   }
