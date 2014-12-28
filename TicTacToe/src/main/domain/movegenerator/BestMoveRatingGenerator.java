@@ -90,24 +90,12 @@ public class BestMoveRatingGenerator implements MoveRatingGenerator {
   
   private MoveRating getBestMoveRatingWithRespectToDepthForOpposingWin(MoveRating moveRating1, MoveRating moveRating2) {
     if (wasLossForOpponentMoveRating(moveRating1))
-      return getBestMoveRatingWithRespectToDepthForOpponentLoss(moveRating1, moveRating2);
-    return getBestMoveRatingWithRespectToDepthForOpponentWin(moveRating1, moveRating2);
+      return getBestMoveRatingForLoss(moveRating1, moveRating2);
+    return getBestMoveRatingForWin(moveRating1, moveRating2);
   }
   
   private boolean wasLossForOpponentMoveRating(MoveRating opponentMoveRating) {
     return opponentMoveRating.getRating() == 1;
-  }
-  
-  private MoveRating getBestMoveRatingWithRespectToDepthForOpponentLoss(MoveRating moveRating1, MoveRating moveRating2) {
-    if (moveRating1.getDepth() < moveRating2.getDepth())
-      return moveRating1;
-    return moveRating2;
-  }
-  
-  private MoveRating getBestMoveRatingWithRespectToDepthForOpponentWin(MoveRating moveRating1, MoveRating moveRating2) {
-    if (moveRating1.getDepth() > moveRating2.getDepth())
-      return moveRating1;
-    return moveRating2;
   }
   
   private MoveRating getBestMoveRatingWithRespectToOriginalPlayersTurn(MoveRating moveRating1, MoveRating moveRating2) {
@@ -128,21 +116,21 @@ public class BestMoveRatingGenerator implements MoveRatingGenerator {
   
   private MoveRating getBestMoveRatingWithRespectToDepthForOriginalPlayersWin(MoveRating moveRating1, MoveRating moveRating2) {
     if (wasLossForOriginalPlayerMoveRating(moveRating1))
-      return getBestMoveRatingWithRespectToDepthForOriginalPlayerLoss(moveRating1, moveRating2);
-    return getBestMoveRatingWithRespectToDepthForOriginalPlayerWin(moveRating1, moveRating2);
+      return getBestMoveRatingForLoss(moveRating1, moveRating2);
+    return getBestMoveRatingForWin(moveRating1, moveRating2);
   }
   
   private boolean wasLossForOriginalPlayerMoveRating(MoveRating originalPlayerMoveRating) {
     return originalPlayerMoveRating.getRating() == -1;
   }
   
-  private MoveRating getBestMoveRatingWithRespectToDepthForOriginalPlayerLoss(MoveRating moveRating1, MoveRating moveRating2) {
+  private MoveRating getBestMoveRatingForLoss(MoveRating moveRating1, MoveRating moveRating2) {
     if (moveRating1.getDepth() > moveRating2.getDepth())
       return moveRating1;
     return moveRating2;
   }
   
-  private MoveRating getBestMoveRatingWithRespectToDepthForOriginalPlayerWin(MoveRating moveRating1, MoveRating moveRating2) {
+  private MoveRating getBestMoveRatingForWin(MoveRating moveRating1, MoveRating moveRating2) {
     if (moveRating1.getDepth() < moveRating2.getDepth())
       return moveRating1;
     return moveRating2;

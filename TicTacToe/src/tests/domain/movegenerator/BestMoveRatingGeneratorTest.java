@@ -68,7 +68,7 @@ public class BestMoveRatingGeneratorTest {
   }
   
   @Test
-  public void testBestMoveRatingDepthForDefiniteLossIsThree() {
+  public void testBestMoveRatingDepthForPointZeroTwoForDefiniteLossIsThree() {
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 1)));
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 2)));
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 2)));
@@ -94,6 +94,31 @@ public class BestMoveRatingGeneratorTest {
     board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(2, 0)));
     board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(2, 1)));
     assertEquals(1, bestMoveRatingGenerator.getMoveRating(board, new MoveEntity(TicTacToePieceEntity.X, new Point(0, 1))).getRating());
+  }
+  
+  @Test
+  public void testBestMoveRatingDepthForPointZeroZeroForDefiniteLossIsOne() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 2)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 2)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(2, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(2, 1)));
+    assertEquals(1, bestMoveRatingGenerator.getMoveRating(board, new MoveEntity(TicTacToePieceEntity.O, new Point(0, 0))).getDepth());
+  }
+  
+  @Test
+  public void testBestRatingForPointZeroZeroForDefiniteLossIsNegativeOne() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 2)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 2)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(2, 0)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(2, 1)));
+    assertEquals(-1, bestMoveRatingGenerator.getMoveRating(board, new MoveEntity(TicTacToePieceEntity.O, new Point(0, 0))).getRating());
+  }
+  
+  @Test
+  public void testBestMoveRatingDepthForEmptyBoardIsEight() {
+    assertEquals(8, bestMoveRatingGenerator.getMoveRating(board, new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1))).getDepth());
   }
 
 }
