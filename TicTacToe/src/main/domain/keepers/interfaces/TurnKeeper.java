@@ -4,5 +4,7 @@ import main.domain.entities.TicTacToePlayerEntity;
 
 public interface TurnKeeper {
 
-  public TicTacToePlayerEntity getNextPlayer();
+  public void setCurrentPlayer(TicTacToePlayerEntity currentPlayer);
+  public TicTacToePlayerEntity getCurrentPlayer();
+  public TicTacToePlayerEntity switchToNextPlayer();
 }
