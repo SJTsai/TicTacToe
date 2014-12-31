@@ -1,5 +1,6 @@
 package main.domain.keepers;
 
+import main.domain.entities.TicTacToePieceEntity;
 import main.domain.entities.TicTacToePlayerEntity;
 import main.domain.keepers.interfaces.TurnKeeper;
 
@@ -40,6 +41,16 @@ public class AlternatingTurnKeeper implements TurnKeeper {
     
     currentPlayer = player1;
     return currentPlayer;
+  }
+
+  @Override
+  public TicTacToePieceEntity getPieceForCurrentPlayer() {
+    return getCurrentPlayer().getPiece();
+  }
+
+  @Override
+  public boolean isCurrentPlayerAComputer() {
+    return getCurrentPlayer().isComputer();
   }
 
 }

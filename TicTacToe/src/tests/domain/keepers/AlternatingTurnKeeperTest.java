@@ -56,5 +56,49 @@ public class AlternatingTurnKeeperTest {
     alternatingTurnKeeper.switchToNextPlayer();
     assertTrue(player1.equals(alternatingTurnKeeper.getCurrentPlayer()));
   }
+  
+  @Test
+  public void testPieceForCurrentPlayerIsX() {
+    alternatingTurnKeeper.setCurrentPlayer(player1);
+    assertEquals(TicTacToePieceEntity.X, alternatingTurnKeeper.getPieceForCurrentPlayer());
+  }
+  
+  @Test
+  public void testPieceForCurrentPlayerAfterSwitchingIsO() {
+    alternatingTurnKeeper.setCurrentPlayer(player1);
+    alternatingTurnKeeper.switchToNextPlayer();
+    assertEquals(TicTacToePieceEntity.O, alternatingTurnKeeper.getPieceForCurrentPlayer());
+  }
+  
+  @Test
+  public void testPlayerWithoutSettingCurrentPlayerIsNotComputer() {
+    assertFalse(alternatingTurnKeeper.isCurrentPlayerAComputer());
+  }
+  
+  @Test
+  public void testPlayerAfterSettingPlayerIsNotComputer() {
+    alternatingTurnKeeper.setCurrentPlayer(player1);
+    assertFalse(alternatingTurnKeeper.isCurrentPlayerAComputer());
+  }
+  
+  @Test
+  public void testPlayerAfterSettingPlayerIsComputer() {
+    alternatingTurnKeeper.setCurrentPlayer(player2);
+    assertTrue(alternatingTurnKeeper.isCurrentPlayerAComputer());
+  }
+  
+  @Test
+  public void testPlayerAfterSwitchingIsComputer() {
+    alternatingTurnKeeper.setCurrentPlayer(player1);
+    alternatingTurnKeeper.switchToNextPlayer();
+    assertTrue(alternatingTurnKeeper.isCurrentPlayerAComputer());
+  }
+  
+  @Test
+  public void testPlayerAfterSwitchingIsNotComputer() {
+    alternatingTurnKeeper.setCurrentPlayer(player2);
+    alternatingTurnKeeper.switchToNextPlayer();
+    assertFalse(alternatingTurnKeeper.isCurrentPlayerAComputer());
+  }
 
 }
