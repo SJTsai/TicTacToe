@@ -65,6 +65,20 @@ public class TicTacToeBoardEntity implements Cloneable {
     return emptyPointsClone;
   }
   
+  public List<Point>getXPointsClone() {
+    List<Point> xPointsClone = new ArrayList<Point>();
+    for (Point xPointToClone : xPoints)
+      xPointsClone.add(new Point(xPointToClone));
+    return xPointsClone;
+  }
+  
+  public List<Point>getOPointsClone() {
+    List<Point> oPointsClone = new ArrayList<Point>();
+    for (Point oPointToClone : oPoints)
+      oPointsClone.add(new Point(oPointToClone));
+    return oPointsClone;
+  }
+  
   public void addMove(MoveEntity move) {
     Point pointToTake = move.getPoint();
     TicTacToePieceEntity pieceToAdd = move.getPiece();

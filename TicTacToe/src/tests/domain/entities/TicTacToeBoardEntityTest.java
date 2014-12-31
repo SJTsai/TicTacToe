@@ -1,8 +1,12 @@
 package tests.domain.entities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 import main.domain.entities.MoveEntity;
 import main.domain.entities.TicTacToeBoardEntity;
@@ -477,6 +481,22 @@ public class TicTacToeBoardEntityTest {
     board.addMove(new MoveEntity(pieceToAdd, pointToTake));
     TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
     assertTrue(boardClone.isPieceAtPointEqualToPiece(pointToTake, pieceToAdd));
+  }
+  
+  @Test
+  public void testClonedXPointsIsEqualToOriginal() {
+    List<Point> xPointsToTake = new ArrayList<Point>();
+    xPointsToTake.add(new Point(1, 1));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+    assertTrue(xPointsToTake.equals(board.getXPointsClone()));
+  }
+  
+  @Test
+  public void testClonedOPointsIsEqualToOriginal() {
+    List<Point> oPointsToTake = new ArrayList<Point>();
+    oPointsToTake.add(new Point(1, 1));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1)));
+    assertTrue(oPointsToTake.equals(board.getOPointsClone()));
   }
 
 }
