@@ -42,4 +42,16 @@ public class TicTacToeBoard {
     return oPoints;
   }
   
+  public boolean isPointTaken(Point point) {
+    return xPoints.contains(point) || oPoints.contains(point);
+  }
+  
+  public boolean isOPieceAtPoint(Point point) {
+    return oPoints.contains(point);
+  }
+  
+  public boolean isXPieceAtPoint(Point point) {
+    return xPoints.contains(point);
+  }
+  
 }
