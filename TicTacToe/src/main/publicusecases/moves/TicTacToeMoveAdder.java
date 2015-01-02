@@ -32,6 +32,7 @@ public class TicTacToeMoveAdder implements MoveAdder {
     this.moveGenerator = moveGenerator;
     this.callBack = callBack;
     boardMapper = new TicTacToeBoardMapper();
+    pieceMapper = new TicTacToePieceMapper();
   }
 
   @Override

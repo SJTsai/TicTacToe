@@ -1,6 +1,9 @@
 package tests.publicusecases.moves;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+
+import java.awt.Point;
+
 import main.domain.entities.TicTacToeBoardEntity;
 import main.domain.entities.TicTacToePieceEntity;
 import main.domain.entities.TicTacToePlayerEntity;
@@ -24,14 +27,16 @@ import org.junit.Test;
 public class TicTacToeMoveAdderTest implements TicTacToeMoveAdderCallBack {
   
   private MoveAdder ticTacToeMoveAdder;
-  private TicTacToeBoardEntity board;
+  private TicTacToeBoardEntity boardEntity;
+  private TicTacToeBoard board;
   private boolean isPlayerTurn;
   private boolean didPlayerWin;
+  private boolean didComputerWin;
   private boolean didGameTie;
 
   @Before
   public void setUp() throws Exception {
-    board = new TicTacToeBoardEntity();
+    boardEntity = new TicTacToeBoardEntity();
     
     TicTacToePlayerEntity humanPlayer = new TicTacToePlayerEntity(TicTacToePieceEntity.X, false);
     TicTacToePlayerEntity computerPlayer = new TicTacToePlayerEntity(TicTacToePieceEntity.O, true);
@@ -41,17 +46,73 @@ public class TicTacToeMoveAdderTest implements TicTacToeMoveAdderCallBack {
     
     MoveGenerator bestMoveGenerator = new BestMoveGenerator(new BestMoveRatingGenerator(defaultWinnerVerifier));
     
-    ticTacToeMoveAdder = new TicTacToeMoveAdder(board, alternatingTurnKeeper, defaultWinnerVerifier, bestMoveGenerator, this);
+    ticTacToeMoveAdder = new TicTacToeMoveAdder(boardEntity, alternatingTurnKeeper, defaultWinnerVerifier, bestMoveGenerator, this);
+    
+    isPlayerTurn = true;
+    didPlayerWin = false;
+    didComputerWin = false;
+    didGameTie = false;
+  }
+  
+  @Test
+  public void testComputerHasntGoneYet() {
+    assertTrue(isPlayerTurn);
   }
 
   @Test
-  public void test() {
-    fail("Not yet implemented");
+  public void testBoardContainsXOnPointOneOne() {
+    Point pointToTake = new Point(1, 1);
+    ticTacToeMoveAdder.addMove(pointToTake);
+    assertTrue(board.isXPieceAtPoint(pointToTake));
+  }
+  
+  @Test
+  public void testComputerMadeMove() {
+    Point pointToTake = new Point(1, 1);
+    ticTacToeMoveAdder.addMove(pointToTake);
+    assertFalse(board.getOPoints().isEmpty());
+  }
+  
+  @Test
+  public void testBoardContainsXOnTwoOne() {
+    Point pointToTake = new Point(2, 1);
+    ticTacToeMoveAdder.addMove(new Point(1, 1));
+    ticTacToeMoveAdder.addMove(pointToTake);
+    assertTrue(board.isXPieceAtPoint(new Point(1, 1)));
+    assertTrue(board.isXPieceAtPoint(pointToTake));
+  }
+  
+  @Test
+  public void testComputerWon() {
+    ticTacToeMoveAdder.addMove(new Point(1, 1));
+    ticTacToeMoveAdder.addMove(new Point(2, 1));
+    ticTacToeMoveAdder.addMove(new Point(2, 2));
+    assertTrue(didComputerWin);
+  }
+  
+  @Test
+  public void testGameTie() {
+    ticTacToeMoveAdder.addMove(new Point(1, 1));
+    ticTacToeMoveAdder.addMove(new Point(2, 1));
+    ticTacToeMoveAdder.addMove(new Point(0, 2));
+    ticTacToeMoveAdder.addMove(new Point(1, 0));
+    ticTacToeMoveAdder.addMove(new Point(2, 2));
+    assertTrue(didGameTie);
+  }
+  
+  @Test
+  public void testPlayerDidNotWin() {
+    ticTacToeMoveAdder.addMove(new Point(1, 1));
+    ticTacToeMoveAdder.addMove(new Point(2, 1));
+    ticTacToeMoveAdder.addMove(new Point(0, 2));
+    ticTacToeMoveAdder.addMove(new Point(1, 0));
+    ticTacToeMoveAdder.addMove(new Point(2, 2));
+    assertFalse(didPlayerWin);
   }
 
   @Override
   public void onMoveAdded(TicTacToeBoard board) {
-    
+    this.board = board;
   }
 
   @Override
@@ -61,7 +122,7 @@ public class TicTacToeMoveAdderTest implements TicTacToeMoveAdderCallBack {
 
   @Override
   public void onComputerWon() {
-    didPlayerWin = false;
+    didComputerWin = true;
   }
 
   @Override
