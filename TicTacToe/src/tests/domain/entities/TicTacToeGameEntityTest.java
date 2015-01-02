@@ -1,6 +1,7 @@
 package tests.domain.entities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Point;
 
@@ -9,7 +10,6 @@ import main.domain.entities.TicTacToeGameEntity;
 import main.domain.entities.TicTacToePieceEntity;
 import main.domain.entities.TicTacToePlayerEntity;
 import main.domain.keepers.AlternatingTurnKeeper;
-import main.domain.movegenerator.interfaces.MoveGenerator;
 
 import org.junit.Before;
 import org.junit.Test;
