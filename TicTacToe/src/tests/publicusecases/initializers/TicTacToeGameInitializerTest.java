@@ -153,5 +153,11 @@ public class TicTacToeGameInitializerTest implements TicTacToeGameInitializerCal
     // TODO Auto-generated method stub
     
   }
+  
+  @Override
+  public void onPointTaken(Point point) {
+    // TODO Auto-generated method stub
+    
+  }
 
 }

@@ -125,6 +125,12 @@ public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, T
     moveAdder.addMove(getPointInput());
   }
   
+  @Override
+  public void onPointTaken(Point point) {
+    System.out.println("\n" + getStringRepresentationOfPoint(point) + " is already taken.  Please choose again.\n");
+    moveAdder.addMove(getPointInput());
+  }
+  
   private String getStringRepresentationOfPoint(Point point) {
     return "(" + point.x + ", " + point.y + ")";
   }

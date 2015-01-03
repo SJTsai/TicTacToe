@@ -42,6 +42,11 @@ public class TicTacToeMoveAdder implements MoveAdder {
       return;
     }
     
+    if (board.isPointTaken(pointToTake)) {
+      callBack.onPointTaken(pointToTake);
+      return;
+    }
+    
     MoveEntity move = new MoveEntity(turnKeeper.getPieceForCurrentPlayer(), pointToTake);
     board.addMove(move);
     lastMoveMade = move;

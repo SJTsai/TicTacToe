@@ -36,6 +36,7 @@ public class TicTacToeMoveAdderTest implements TicTacToeMoveAdderCallBack {
   private Point pointOutOfBounds;
   private Point pointWhereAdded;
   private boolean recordPointWhereAdded;
+  private Point pointTakenAlready;
 
   @Before
   public void setUp() throws Exception {
@@ -148,6 +149,14 @@ public class TicTacToeMoveAdderTest implements TicTacToeMoveAdderCallBack {
     ticTacToeMoveAdder.addMove(pointToTake);
     assertEquals(pointWhereAdded, pointToTake);
   }
+  
+  @Test
+  public void testPointWasTaken() {
+    Point pointToTake = new Point(2, 0);
+    ticTacToeMoveAdder.addMove(pointToTake);
+    ticTacToeMoveAdder.addMove(pointToTake);
+    assertEquals(pointTakenAlready, pointToTake);
+  }
 
   @Override
   public void onMoveAdded(TicTacToeBoard board, Point pointWhereAdded) {
@@ -186,6 +195,11 @@ public class TicTacToeMoveAdderTest implements TicTacToeMoveAdderCallBack {
   @Override
   public void onPlayerMoveOutOfBounds(Point point) {
     pointOutOfBounds = point;
+  }
+  
+  @Override
+  public void onPointTaken(Point point) {
+    pointTakenAlready = point;
   }
 
 }

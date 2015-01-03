@@ -14,4 +14,5 @@ public interface TicTacToeMoveAdderCallBack {
   public void onPlayerTurn(TicTacToePiece piece);
   public void onComputerTurn(TicTacToePiece piece);
   public void onPlayerMoveOutOfBounds(Point point);
+  public void onPointTaken(Point point);
 }
