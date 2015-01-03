@@ -16,7 +16,8 @@ public class TicTacToeBoardFormatter implements BoardFormatter {
     System.out.println("   0  1  2");
     String boardStringRepresentation = "";
     for (int row = 0; row < board.getNumberOfRows(); row++)
-      boardStringRepresentation += row + " " + getStringRepresentationOfRow(row) + "\n";
+      boardStringRepresentation += row + " " + getStringRepresentationOfRow(row) + 
+      (row == board.getNumberOfRows() - 1 ? "" : "\n");
     return boardStringRepresentation;
   }
   

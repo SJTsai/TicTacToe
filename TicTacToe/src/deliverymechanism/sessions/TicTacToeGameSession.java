@@ -41,6 +41,7 @@ public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, T
   @Override
   public void onMoveAdded(TicTacToeBoard board, Point pointWhereAdded) {
     displayBoard(board);
+    System.out.println("Point added at " + getStringRepresentationOfPoint(pointWhereAdded) + "\n");
   }
 
   @Override
@@ -119,8 +120,12 @@ public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, T
   
   @Override
   public void onPlayerMoveOutOfBounds(Point point) {
-    System.out.println("\n(" + point.x + ", " + point.y + ") is out of bounds.  Please choose again.\n");
+    System.out.println("\n" + getStringRepresentationOfPoint(point) + " is out of bounds.  Please choose again.\n");
     moveAdder.addMove(getPointInput());
+  }
+  
+  private String getStringRepresentationOfPoint(Point point) {
+    return "(" + point.x + ", " + point.y + ")";
   }
   
   private String getPieceStringRepresentation(TicTacToePiece piece) {
