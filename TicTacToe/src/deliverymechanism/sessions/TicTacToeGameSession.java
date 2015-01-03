@@ -93,6 +93,7 @@ public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, T
 
   @Override
   public void onGameCreated(TicTacToeBoard board, MoveAdder moveAdder) {
+    System.out.println("Board created.");
     displayBoard(board);
     this.moveAdder = moveAdder;
   }
@@ -107,7 +108,7 @@ public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, T
   @Override
   public void onPlayerToStart(TicTacToePiece piece) {
     String pieceStringRepresentation = piece == TicTacToePiece.X ? "X" : "O";
-    System.out.println("You are playing as: " + pieceStringRepresentation + "\n");
+    System.out.println("\nYou are playing as: " + pieceStringRepresentation + "\n");
     
     Point pointInput = getPointInput();
     moveAdder.addMove(pointInput);
