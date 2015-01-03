@@ -60,10 +60,27 @@ public class BestMoveGeneratorTest {
   }
   
   @Test
-  public void testBestMoveAfterPointZeroOneIsPointOneOne() {
+  public void testBestMoveAfterPointOneOneIsPointZeroZero() {
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
     MoveEntity bestMove = bestMoveGenerator.getBestMoveForBoardAndCurrentPieceToPlay(board, TicTacToePieceEntity.O);
+    Point expectedPoint = new Point(0, 0);
+    assertEquals(expectedPoint, bestMove.getPoint());
+  }
+  
+  @Test
+  public void testBestMoveAfterPointTwoTwoIsPointOneOne() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 2)));
+    MoveEntity bestMove = bestMoveGenerator.getBestMoveForBoardAndCurrentPieceToPlay(board, TicTacToePieceEntity.O);
     Point expectedPoint = new Point(1, 1);
+    assertEquals(expectedPoint, bestMove.getPoint());
+  }
+  
+  @Test
+  public void testBestmoveAfterMovingToPointOneOneAndZeroZeroIsPointTwoTwo() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1)));
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 0)));
+    MoveEntity bestMove = bestMoveGenerator.getBestMoveForBoardAndCurrentPieceToPlay(board, TicTacToePieceEntity.O);
+    Point expectedPoint = new Point(2, 2);
     assertEquals(expectedPoint, bestMove.getPoint());
   }
 }

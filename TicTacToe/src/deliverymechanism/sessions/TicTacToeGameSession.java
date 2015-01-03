@@ -70,9 +70,10 @@ public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, T
       if (continueResponse.equalsIgnoreCase("y") || continueResponse.equalsIgnoreCase("yes")) {
         continuePlaying = true;
         didNotInputCorrectResponse = false;
+        System.out.println();
       }
       else if (continueResponse.equalsIgnoreCase("n") || continueResponse.equalsIgnoreCase("no")) {
-        System.out.println("Thanks for playing.");
+        System.out.println("\nThanks for playing.");
         continuePlaying = false;
         didNotInputCorrectResponse = false;
         inputScanner.close();
@@ -116,7 +117,7 @@ public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, T
   
   @Override
   public void onComputerToStart(TicTacToePiece piece) {
-    System.out.println("Computer (" + getPieceStringRepresentation(piece) + ") is starting...");
+    System.out.println("\nComputer (" + getPieceStringRepresentation(piece) + ") is starting...");
   };
   
   @Override
