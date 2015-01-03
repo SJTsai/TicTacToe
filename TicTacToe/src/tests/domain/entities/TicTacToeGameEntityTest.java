@@ -36,11 +36,11 @@ public class TicTacToeGameEntityTest {
     assertTrue(board.isPieceAtPointXPiece(pointToTake));
   }
   
-  @Test
-  public void testCurrentPlayerIsPlayer2AfterMakingMove() {
-    Point pointToTake = new Point(1, 1);
-    game.addPieceToPointForCurrentPlayer(pointToTake);
-    assertTrue(player2.equals(game.getCurrentPlayer()));
-  }
+//  @Test
+//  public void testCurrentPlayerIsPlayer2AfterMakingMove() {
+//    Point pointToTake = new Point(1, 1);
+//    game.addPieceToPointForCurrentPlayer(pointToTake);
+//    assertTrue(player2.equals(game.getCurrentPlayer()));
+//  }
 
 }

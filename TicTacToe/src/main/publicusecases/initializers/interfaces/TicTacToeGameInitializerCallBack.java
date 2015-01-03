@@ -7,5 +7,6 @@ import main.publicusecases.moves.interfaces.MoveAdder;
 public interface TicTacToeGameInitializerCallBack {
 
   public void onGameCreated(TicTacToeBoard board, MoveAdder moveAdder);
-  public void onPlayerToPlay(TicTacToePiece piece);
+  public void onPlayerToStart(TicTacToePiece piece);
+  public void onComputerToStart(TicTacToePiece piece);
 }

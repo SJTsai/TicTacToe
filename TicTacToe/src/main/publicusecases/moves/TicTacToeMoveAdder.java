@@ -37,6 +37,11 @@ public class TicTacToeMoveAdder implements MoveAdder {
 
   @Override
   public void addMove(Point pointToTake) {
+    if (isPointOutOfBounds(pointToTake)) {
+      callBack.onPlayerMoveOutOfBounds(pointToTake);
+      return;
+    }
+    
     MoveEntity move = new MoveEntity(turnKeeper.getPieceForCurrentPlayer(), pointToTake);
     board.addMove(move);
     lastMoveMade = move;
@@ -49,6 +54,18 @@ public class TicTacToeMoveAdder implements MoveAdder {
       handleTie();
     else
       handleGameMustContinue();
+  }
+  
+  private boolean isPointOutOfBounds(Point point) {
+    return isXCoordinateOutOfBounds(point.x) || isYCoordinateOutOfBounds(point.y);
+  }
+  
+  private boolean isXCoordinateOutOfBounds(int xCoordinate) {
+    return xCoordinate < 0 || xCoordinate >= board.getNumberOfRows();
+  }
+  
+  private boolean isYCoordinateOutOfBounds(int yCoordinate) {
+    return yCoordinate < 0 || yCoordinate>= board.getNumberOfColumns();
   }
   
   private boolean wasLastMoveAWin() {

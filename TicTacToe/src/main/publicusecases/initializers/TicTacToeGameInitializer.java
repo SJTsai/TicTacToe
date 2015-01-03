@@ -1,5 +1,7 @@
 package main.publicusecases.initializers;
 
+import java.awt.Point;
+
 import main.domain.entities.TicTacToeBoardEntity;
 import main.domain.entities.TicTacToePieceEntity;
 import main.domain.entities.TicTacToePlayerEntity;
@@ -26,6 +28,7 @@ public class TicTacToeGameInitializer implements GameInitializer {
   private TicTacToeGameInitializerCallBack gameInitializerCallBack;
   private TicTacToeMoveAdderCallBack moveAdderCallBack;
   private TicTacToePieceMapper pieceMapper;
+  private boolean humanGoesFirst;
   
   public TicTacToeGameInitializer(TicTacToeGameInitializerCallBack gameInitializerCallBack,
       TicTacToeMoveAdderCallBack moveAdderCallBack) {
@@ -36,15 +39,26 @@ public class TicTacToeGameInitializer implements GameInitializer {
 
   @Override
   public void initializeGame() {
+    humanGoesFirst = !humanGoesFirst;
+    
     TicTacToeBoardEntity board = new TicTacToeBoardEntity();
     TurnKeeper alternatingTurnKeeper = getTurnKeeper();
     MoveAdder moveAdder = new TicTacToeMoveAdder(board, 
         alternatingTurnKeeper, getWinnerVerifier(), getMoveGenerator(), moveAdderCallBack);
     
     TicTacToeBoardMapper boardMapper = new TicTacToeBoardMapper();
-    TicTacToeBoard boardToSentToCallBack = boardMapper.mapTicTacToeBoardEntity(board);
-    gameInitializerCallBack.onGameCreated(boardToSentToCallBack, moveAdder);
-    gameInitializerCallBack.onPlayerToPlay(pieceMapper.mapTicTacToePieceEntity(alternatingTurnKeeper.getPieceForCurrentPlayer()));
+    TicTacToeBoard boardToSendToCallBack = boardMapper.mapTicTacToeBoardEntity(board);
+    gameInitializerCallBack.onGameCreated(boardToSendToCallBack, moveAdder);
+    
+    if (humanGoesFirst)
+      gameInitializerCallBack.onPlayerToStart(pieceMapper.mapTicTacToePieceEntity(alternatingTurnKeeper.getPieceForCurrentPlayer()));
+    else {
+      if (!alternatingTurnKeeper.isCurrentPlayerAComputer())
+        alternatingTurnKeeper.switchToNextPlayer();
+      
+      gameInitializerCallBack.onComputerToStart(pieceMapper.mapTicTacToePieceEntity(alternatingTurnKeeper.getPieceForCurrentPlayer()));
+      moveAdder.addMove(new Point(1, 1));
+    }
   }
   
   private TurnKeeper getTurnKeeper() {

@@ -90,6 +90,12 @@ public class TicTacToeGameInitializerTest implements TicTacToeGameInitializerCal
     assertTrue(moveAdder != null);
   }
   
+  @Test
+  public void testPieceIsOAfterInitializingGameTwice() {
+    ticTacToeGameInitializer.initializeGame();
+    assertEquals(TicTacToePiece.O, pieceToPlay);
+  }
+  
   @Override
   public void onGameCreated(TicTacToeBoard board, MoveAdder moveAdder) {
     this.board = board;
@@ -97,7 +103,12 @@ public class TicTacToeGameInitializerTest implements TicTacToeGameInitializerCal
   }
   
   @Override
-  public void onPlayerToPlay(TicTacToePiece piece) {
+  public void onPlayerToStart(TicTacToePiece piece) {
+    this.pieceToPlay = piece;
+  };
+  
+  @Override
+  public void onComputerToStart(TicTacToePiece piece) {
     this.pieceToPlay = piece;
   };
 
@@ -133,6 +144,12 @@ public class TicTacToeGameInitializerTest implements TicTacToeGameInitializerCal
 
   @Override
   public void onComputerTurn(TicTacToePiece piece) {
+    // TODO Auto-generated method stub
+    
+  }
+  
+  @Override
+  public void onPlayerMoveOutOfBounds(Point point) {
     // TODO Auto-generated method stub
     
   }

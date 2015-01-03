@@ -58,4 +58,12 @@ public class BestMoveGeneratorTest {
     MoveEntity bestMove = bestMoveGenerator.getBestMoveForBoardAndCurrentPieceToPlay(board, TicTacToePieceEntity.X);
     assertTrue(goodMoves.contains(bestMove.getPoint()));
   }
+  
+  @Test
+  public void testBestMoveAfterPointZeroOneIsPointOneOne() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(1, 1)));
+    MoveEntity bestMove = bestMoveGenerator.getBestMoveForBoardAndCurrentPieceToPlay(board, TicTacToePieceEntity.O);
+    Point expectedPoint = new Point(1, 1);
+    assertEquals(expectedPoint, bestMove.getPoint());
+  }
 }

@@ -120,5 +120,11 @@ public class BestMoveRatingGeneratorTest {
   public void testBestMoveRatingDepthForEmptyBoardIsEight() {
     assertEquals(8, bestMoveRatingGenerator.getMoveRating(board, new MoveEntity(TicTacToePieceEntity.O, new Point(1, 1))).getDepth());
   }
+  
+  @Test
+  public void testBestMoveRatingForPointZeroZeroAfterPointZeroOneIsZero() {
+    board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(0, 1)));
+    assertEquals(0, bestMoveRatingGenerator.getMoveRating(board, new MoveEntity(TicTacToePieceEntity.O, new Point(0, 0))).getRating());
+  }
 
 }
