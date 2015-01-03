@@ -7,7 +7,7 @@ import main.domain.models.TicTacToePiece;
 
 public interface TicTacToeMoveAdderCallBack {
 
-  public void onMoveAdded(TicTacToeBoard board);
+  public void onMoveAdded(TicTacToeBoard board, Point pointWhereAdded);
   public void onPlayerWon();
   public void onComputerWon();
   public void onTieGame();

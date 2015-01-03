@@ -113,7 +113,7 @@ public class TicTacToeGameInitializerTest implements TicTacToeGameInitializerCal
   };
 
   @Override
-  public void onMoveAdded(TicTacToeBoard board) {
+  public void onMoveAdded(TicTacToeBoard board, Point pointWhereAdded) {
     // TODO Auto-generated method stub
     
   }

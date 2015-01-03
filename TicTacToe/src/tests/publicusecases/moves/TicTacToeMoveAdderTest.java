@@ -34,6 +34,8 @@ public class TicTacToeMoveAdderTest implements TicTacToeMoveAdderCallBack {
   private boolean didComputerWin;
   private boolean didGameTie;
   private Point pointOutOfBounds;
+  private Point pointWhereAdded;
+  private boolean recordPointWhereAdded;
 
   @Before
   public void setUp() throws Exception {
@@ -53,6 +55,7 @@ public class TicTacToeMoveAdderTest implements TicTacToeMoveAdderCallBack {
     didPlayerWin = false;
     didComputerWin = false;
     didGameTie = false;
+    recordPointWhereAdded = true;
   }
   
   @Test
@@ -138,10 +141,19 @@ public class TicTacToeMoveAdderTest implements TicTacToeMoveAdderCallBack {
     ticTacToeMoveAdder.addMove(pointOutOfBounds);
     assertEquals(this.pointOutOfBounds, pointOutOfBounds);
   }
+  
+  @Test
+  public void testPointWhereAdded() {
+    Point pointToTake = new Point(2, 1);
+    ticTacToeMoveAdder.addMove(pointToTake);
+    assertEquals(pointWhereAdded, pointToTake);
+  }
 
   @Override
-  public void onMoveAdded(TicTacToeBoard board) {
+  public void onMoveAdded(TicTacToeBoard board, Point pointWhereAdded) {
     this.board = board;
+    if (recordPointWhereAdded)
+      this.pointWhereAdded = pointWhereAdded;
   }
 
   @Override
@@ -162,11 +174,13 @@ public class TicTacToeMoveAdderTest implements TicTacToeMoveAdderCallBack {
   @Override
   public void onPlayerTurn(TicTacToePiece piece) {
     isPlayerTurn = true;
+    recordPointWhereAdded = true;
   }
 
   @Override
   public void onComputerTurn(TicTacToePiece piece) {
     isPlayerTurn = false;
+    recordPointWhereAdded = false;
   }
   
   @Override

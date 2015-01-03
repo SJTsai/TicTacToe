@@ -39,7 +39,7 @@ public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, T
   }
   
   @Override
-  public void onMoveAdded(TicTacToeBoard board) {
+  public void onMoveAdded(TicTacToeBoard board, Point pointWhereAdded) {
     displayBoard(board);
   }
 
@@ -119,7 +119,7 @@ public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, T
   
   @Override
   public void onPlayerMoveOutOfBounds(Point point) {
-    System.out.println("(" + point.x + ", " + point.y + ") is out of bounds.  Please choose again.");
+    System.out.println("\n(" + point.x + ", " + point.y + ") is out of bounds.  Please choose again.\n");
     moveAdder.addMove(getPointInput());
   }
   
@@ -142,7 +142,7 @@ public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, T
         inputObtained = true;
       } catch (InputMismatchException inputMismatchException) {
         inputScanner.nextLine();
-        System.out.println("You must enter an integer.  Please choose a point again.");
+        System.out.println("\nYou must enter an integer.  Please choose a point again.\n");
       }
     }
     return new Point(xCoordinate, yCoordinate);

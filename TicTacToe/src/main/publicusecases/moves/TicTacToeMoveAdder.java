@@ -46,7 +46,7 @@ public class TicTacToeMoveAdder implements MoveAdder {
     board.addMove(move);
     lastMoveMade = move;
     
-    callBack.onMoveAdded(boardMapper.mapTicTacToeBoardEntity(board));
+    callBack.onMoveAdded(boardMapper.mapTicTacToeBoardEntity(board), pointToTake);
     
     if (wasLastMoveAWin())
       handleWin();
