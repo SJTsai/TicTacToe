@@ -1,7 +1,7 @@
-package deliverymechanisms.displayers;
+package deliverymechanism.displayers;
 
+import deliverymechanism.displayers.interfaces.BoardDisplayer;
 import deliverymechanism.viewmodels.TicTacToeBoardViewModel;
-import deliverymechanisms.displayers.interfaces.BoardDisplayer;
 
 public class TicTacToeBoardDisplayer implements BoardDisplayer {
 

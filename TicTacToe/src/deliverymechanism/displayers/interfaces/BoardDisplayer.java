@@ -1,4 +1,4 @@
-package deliverymechanisms.displayers.interfaces;
+package deliverymechanism.displayers.interfaces;
 
 import deliverymechanism.viewmodels.TicTacToeBoardViewModel;
 

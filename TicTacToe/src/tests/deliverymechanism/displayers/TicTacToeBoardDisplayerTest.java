@@ -3,9 +3,9 @@ package tests.deliverymechanism.displayers;
 import org.junit.Before;
 import org.junit.Test;
 
+import deliverymechanism.displayers.TicTacToeBoardDisplayer;
+import deliverymechanism.displayers.interfaces.BoardDisplayer;
 import deliverymechanism.viewmodels.TicTacToeBoardViewModel;
-import deliverymechanisms.displayers.TicTacToeBoardDisplayer;
-import deliverymechanisms.displayers.interfaces.BoardDisplayer;
 
 public class TicTacToeBoardDisplayerTest {
 

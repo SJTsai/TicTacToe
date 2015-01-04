@@ -1,8 +1,8 @@
 package deliverymechanism.main;
 
+import deliverymechanism.displayers.TicTacToeBoardDisplayer;
 import deliverymechanism.formatters.TicTacToeBoardFormatter;
 import deliverymechanism.sessions.TicTacToeGameSession;
-import deliverymechanisms.displayers.TicTacToeBoardDisplayer;
 
 public class TicTacToeDriver {
 

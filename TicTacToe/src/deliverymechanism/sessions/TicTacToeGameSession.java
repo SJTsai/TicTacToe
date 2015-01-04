@@ -11,9 +11,9 @@ import main.publicusecases.initializers.interfaces.GameInitializer;
 import main.publicusecases.initializers.interfaces.TicTacToeGameInitializerCallBack;
 import main.publicusecases.moves.interfaces.MoveAdder;
 import main.publicusecases.moves.interfaces.TicTacToeMoveAdderCallBack;
+import deliverymechanism.displayers.interfaces.BoardDisplayer;
 import deliverymechanism.formatters.interfaces.BoardFormatter;
 import deliverymechanism.viewmodels.TicTacToeBoardViewModel;
-import deliverymechanisms.displayers.interfaces.BoardDisplayer;
 
 public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, TicTacToeMoveAdderCallBack {
 
