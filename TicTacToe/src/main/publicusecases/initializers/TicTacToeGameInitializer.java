@@ -52,13 +52,8 @@ public class TicTacToeGameInitializer implements GameInitializer {
     
     if (humanGoesFirst)
       gameInitializerCallBack.onPlayerToStart(pieceMapper.mapTicTacToePieceEntity(alternatingTurnKeeper.getPieceForCurrentPlayer()));
-    else {
-      if (!alternatingTurnKeeper.isCurrentPlayerAComputer())
-        alternatingTurnKeeper.switchToNextPlayer();
-      
-      gameInitializerCallBack.onComputerToStart(pieceMapper.mapTicTacToePieceEntity(alternatingTurnKeeper.getPieceForCurrentPlayer()));
-      moveAdder.addMove(new Point(1, 1));
-    }
+    else
+      handleComputerGoesFirst(alternatingTurnKeeper, moveAdder);
   }
   
   private TurnKeeper getTurnKeeper() {
@@ -76,6 +71,14 @@ public class TicTacToeGameInitializer implements GameInitializer {
     CheckRowColumnVerifier defaultCheckRowColumnVerifier = new DefaultCheckRowColumnVerifier();
     WinnerVerifier defaultWinnerVerifier = new DefaultWinnerVerifier(defaultCheckRowColumnVerifier);
     return defaultWinnerVerifier;
+  }
+  
+  private void handleComputerGoesFirst(TurnKeeper turnKeeper, MoveAdder moveAdder) {
+    if (!turnKeeper.isCurrentPlayerAComputer())
+      turnKeeper.switchToNextPlayer();
+    
+    gameInitializerCallBack.onComputerToStart(pieceMapper.mapTicTacToePieceEntity(turnKeeper.getPieceForCurrentPlayer()));
+    moveAdder.addMove(new Point(1, 1));
   }
 
 }
