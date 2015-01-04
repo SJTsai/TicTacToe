@@ -14,8 +14,11 @@ import main.domain.movegenerator.interfaces.MoveRatingGenerator;
 
 public class BestMoveGenerator implements MoveGenerator {
   
-  private MoveRatingGenerator moveRatingGenerator;
   private TicTacToeBoardEntity board;
+  private TicTacToePieceEntity pieceToPlay;
+  private MoveRatingGenerator moveRatingGenerator;
+  private List<MoveRating> moveRatingsForEmptyPoints;
+  private HashMap<MoveRating, Point> moveRatingToPointMapping;
   
   public BestMoveGenerator(MoveRatingGenerator moveRatingGenerator) {
     this.moveRatingGenerator = moveRatingGenerator;
@@ -24,20 +27,18 @@ public class BestMoveGenerator implements MoveGenerator {
   @Override
   public MoveEntity getBestMoveForBoardAndCurrentPieceToPlay(TicTacToeBoardEntity board, TicTacToePieceEntity pieceToPlay) {
     this.board = board;
+    this.pieceToPlay = pieceToPlay;
+    
     List<Point> emptyPoints = board.getEmptyPointsClone();
-    List<MoveRating> moveRatings = new ArrayList<MoveRating>();
-    Map<MoveRating, Point> moveRatingToPointMapping = new HashMap<MoveRating, Point>();
-    for (Point emptyPoint : emptyPoints) {
-      MoveEntity testMove = new MoveEntity(pieceToPlay, emptyPoint);
-      MoveRating moveRatingForEmptyPoint = moveRatingGenerator.getMoveRating(board, testMove);
-      moveRatings.add(moveRatingForEmptyPoint);
-      moveRatingToPointMapping.put(moveRatingForEmptyPoint, emptyPoint);
-    }
+    moveRatingsForEmptyPoints = new ArrayList<MoveRating>();
+    moveRatingToPointMapping = new HashMap<MoveRating, Point>();
+    
+    updateMoveRatingsAndAssociatedMappedPointsForEmptyPoints(emptyPoints);
         
-    MoveRating bestMoveRating = getBestMoveRating(moveRatings);
+    MoveRating bestMoveRating = getBestMoveRating(moveRatingsForEmptyPoints);
     
     if (moveRatingIsNeitherWinOrLoss(bestMoveRating)) {
-      List<MoveRating> moveRatingsWithRating0 = getMoveRatingsWithRatingFromListOfMoveRatings(0, moveRatings);
+      List<MoveRating> moveRatingsWithRating0 = getMoveRatingsWithRatingFromListOfMoveRatings(0, moveRatingsForEmptyPoints);
       
       if (doAllMoveRatingsHaveSameDepth(moveRatingsWithRating0)) {
         MoveRating bestMoveRatingForAllRating0 = getMoveRatingWithPoint(new Point(1, 1), moveRatingsWithRating0, moveRatingToPointMapping);
@@ -74,6 +75,60 @@ public class BestMoveGenerator implements MoveGenerator {
     return new MoveEntity(pieceToPlay, pointForBestMoveRating);
   }
   
+  private void updateMoveRatingsAndAssociatedMappedPointsForEmptyPoints(List<Point> emptyPoints) {
+    for (Point emptyPoint : emptyPoints) {
+      MoveEntity testMove = new MoveEntity(pieceToPlay, emptyPoint);
+      MoveRating moveRatingForEmptyPoint = moveRatingGenerator.getMoveRating(board, testMove);
+      moveRatingsForEmptyPoints.add(moveRatingForEmptyPoint);
+      moveRatingToPointMapping.put(moveRatingForEmptyPoint, emptyPoint);
+    }
+  }
+  
+  private MoveRating getBestMoveRating(List<MoveRating> moveRatings) {
+    MoveRating bestMoveRating = null;
+    for (MoveRating moveRatingUnderTest : moveRatings)
+      bestMoveRating = getBetterMoveRatingByComparingOriginalBestAndMoveUnderTest(bestMoveRating, moveRatingUnderTest);
+    return bestMoveRating;
+  }
+  
+  private MoveRating getBetterMoveRatingByComparingOriginalBestAndMoveUnderTest(MoveRating originalBestMoveRating, MoveRating moveRatingUnderTest) {
+    if (originalBestMoveRating == null)
+      return moveRatingUnderTest;
+    
+    int ratingUnderTest = moveRatingUnderTest.getRating();
+    int originalBestRating = originalBestMoveRating.getRating();
+    
+    if (ratingUnderTest > originalBestRating)
+      return moveRatingUnderTest;
+    
+    if (ratingUnderTest == originalBestRating)
+      return getBestMoveRatingWithRespectToDepthByComparingOriginalBestAndMoveUnderTest(originalBestMoveRating, moveRatingUnderTest);
+    
+    return originalBestMoveRating;
+  }
+  
+  private MoveRating getBestMoveRatingWithRespectToDepthByComparingOriginalBestAndMoveUnderTest(MoveRating originalBestMoveRating, MoveRating moveRatingUnderTest) {
+    int ratingUnderTest = moveRatingUnderTest.getRating();
+    MoveRating bestMoveRatingWithRespectToDepth = originalBestMoveRating;
+    if (ratingUnderTest == 1)
+      bestMoveRatingWithRespectToDepth = getBestMoveRatingWithRespectToDepthByComparingOriginalBestAndMoveUnderTestWithRatingOfOne(originalBestMoveRating, moveRatingUnderTest);
+    else if (ratingUnderTest == -1)
+      bestMoveRatingWithRespectToDepth = getBestMoveRatingWithRespectToDepthByComparingOriginalBestAndMoveUnderTestWithRatingOfNegativeOne(originalBestMoveRating, moveRatingUnderTest);
+    return bestMoveRatingWithRespectToDepth;
+  }
+  
+  private MoveRating getBestMoveRatingWithRespectToDepthByComparingOriginalBestAndMoveUnderTestWithRatingOfOne(MoveRating originalBestMoveRating, MoveRating moveRatingUnderTest) {
+    if (moveRatingUnderTest.getDepth() < originalBestMoveRating.getDepth())
+      return moveRatingUnderTest;
+    return originalBestMoveRating;
+  }
+  
+  private MoveRating getBestMoveRatingWithRespectToDepthByComparingOriginalBestAndMoveUnderTestWithRatingOfNegativeOne(MoveRating originalBestMoveRating, MoveRating moveRatingUnderTest) {
+    if (moveRatingUnderTest.getDepth() > originalBestMoveRating.getDepth())
+      return moveRatingUnderTest;
+    return originalBestMoveRating;
+  }
+  
   private MoveRating getMoveRatingWithPoint(Point point, List<MoveRating> moveRatings,
       Map<MoveRating, Point> moveRatingToPointMapping) {
     for (MoveRating moveRating : moveRatings)
@@ -106,39 +161,6 @@ public class BestMoveGenerator implements MoveGenerator {
         return false;
     
     return true;
-  }
-  
-  private List<Point> getPointsForMoveRatings(List<MoveRating> moveRatings,
-      Map<MoveRating, Point> moveRatingToPointMapping) {
-    List<Point> points = new ArrayList<Point>();
-    for (MoveRating moveRating : moveRatings)
-      points.add(moveRatingToPointMapping.get(moveRating));
-    return points;
-  }
-  
-  private MoveRating getBestMoveRating(List<MoveRating> moveRatings) {
-    MoveRating bestMoveRating = null;
-    for (MoveRating moveRatingUnderTest : moveRatings) {
-      if (bestMoveRating == null)
-        bestMoveRating = moveRatingUnderTest;
-      else {
-        int ratingUnderTest = moveRatingUnderTest.getRating();
-        int currentBestRating = bestMoveRating.getRating();
-        
-        if (ratingUnderTest > currentBestRating)
-          bestMoveRating = moveRatingUnderTest;
-        else if (ratingUnderTest == currentBestRating) {
-          if (ratingUnderTest == 1) {
-            if (moveRatingUnderTest.getDepth() < bestMoveRating.getDepth())
-              bestMoveRating = moveRatingUnderTest;
-          } else if (ratingUnderTest == -1) {
-            if (moveRatingUnderTest.getDepth() > bestMoveRating.getDepth())
-              bestMoveRating = moveRatingUnderTest;
-          }
-        }
-      }
-    }
-    return bestMoveRating;
   }
 
 }
