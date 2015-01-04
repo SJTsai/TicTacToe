@@ -13,16 +13,15 @@ public class TicTacToeBoardFormatter implements BoardFormatter {
   public String format(TicTacToeBoard board) {
     this.board = board;
     
-    System.out.println("   0  1  2");
-    String boardStringRepresentation = "";
+    String boardStringRepresentation = "   0  1  2\n";
     for (int row = 0; row < board.getNumberOfRows(); row++)
-      boardStringRepresentation += row + " " + getStringRepresentationOfRow(row) + 
+      boardStringRepresentation += getStringRepresentationOfRow(row) + 
       (row == board.getNumberOfRows() - 1 ? "" : "\n");
     return boardStringRepresentation;
   }
   
   private String getStringRepresentationOfRow(int row) {
-    String rowStringRepresentation = "";
+    String rowStringRepresentation = row + " ";
     for (int column = 0; column < board.getNumberOfColumns(); column++)
       rowStringRepresentation += getStringRepresentationOfPoint(new Point(row, column));
     return rowStringRepresentation;

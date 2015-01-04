@@ -39,7 +39,7 @@ public class TicTacToeBoardFormatterTest {
     TicTacToeBoard board = new TicTacToeBoardMapper().mapTicTacToeBoardEntity(boardEntity);
     
     String boardStringRepresentation = ticTacToeBoardFormatter.format(board);
-    assertEquals("[ ][ ][o]\n[o][x][x]\n[x][ ][o]\n", boardStringRepresentation);
+    assertEquals("   0  1  2\n0 [ ][ ][o]\n1 [o][x][x]\n2 [x][ ][o]", boardStringRepresentation);
   }
 
 }
