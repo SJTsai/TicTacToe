@@ -29,17 +29,12 @@ public class AlternatingTurnKeeper implements TurnKeeper {
 
   @Override
   public TicTacToePlayerEntity switchToNextPlayer() {
-    if (currentPlayer == null) {
+    if (currentPlayer == null)
       currentPlayer = player1;
-      return currentPlayer;
-    }
-    
-    if (currentPlayer.equals(player1)) {
+    else if (currentPlayer.equals(player1))
       currentPlayer = player2;
-      return currentPlayer;
-    }
-    
-    currentPlayer = player1;
+    else
+      currentPlayer = player1;
     return currentPlayer;
   }
 
