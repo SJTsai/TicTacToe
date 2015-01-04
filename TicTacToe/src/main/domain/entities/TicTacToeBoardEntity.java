@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicTacToeBoardEntity implements Cloneable {
+public class TicTacToeBoardEntity {
 
   private TicTacToePieceEntity[][] board;
   private List<Point> xPoints;
@@ -83,20 +83,46 @@ public class TicTacToeBoardEntity implements Cloneable {
     Point pointToTake = move.getPoint();
     TicTacToePieceEntity pieceToAdd = move.getPiece();
     board[pointToTake.x][pointToTake.y] = pieceToAdd;
-    if (pieceToAdd == TicTacToePieceEntity.X) {
-      if (oPoints.contains(pointToTake))
-        oPoints.remove(pointToTake);
-      xPoints.add(pointToTake);
-    } else {
-      if (xPoints.contains(pointToTake))
-        xPoints.remove(pointToTake);
-      oPoints.add(pointToTake);
-    }
+    updateTrackedPointsForAdditionOfMove(move);
+  }
+  
+  private void updateTrackedPointsForAdditionOfMove(MoveEntity move) {
+    if (move.getPiece() == TicTacToePieceEntity.X)
+      updateTrackedPointsForAdditionOfXMove(move.getPoint());
+    else
+      updateTrackedPointsForAdditionOfOMove(move.getPoint());
+  }
+  
+  private void updateTrackedPointsForAdditionOfXMove(Point pointWhereAdded) {
+    if (oPoints.contains(pointWhereAdded))
+      oPoints.remove(pointWhereAdded);
     
-    if (!takenPoints.contains(pointToTake))
-      takenPoints.add(pointToTake);
+    if (!xPoints.contains(pointWhereAdded))
+      xPoints.add(pointWhereAdded);
     
-    emptyPoints.remove(pointToTake);
+    updateTakenPointsForPointAdded(pointWhereAdded);
+    updateEmptyPointsForPointAdded(pointWhereAdded);
+  }
+  
+  private void updateTrackedPointsForAdditionOfOMove(Point pointWhereAdded) {
+    if (xPoints.contains(pointWhereAdded))
+      xPoints.remove(pointWhereAdded);
+    
+    if (!oPoints.contains(pointWhereAdded))
+      oPoints.add(pointWhereAdded);
+    
+    updateTakenPointsForPointAdded(pointWhereAdded);
+    updateEmptyPointsForPointAdded(pointWhereAdded);
+  }
+  
+  private void updateTakenPointsForPointAdded(Point pointWhereAdded) {
+    if (!takenPoints.contains(pointWhereAdded))
+      takenPoints.add(pointWhereAdded);
+  }
+  
+  private void updateEmptyPointsForPointAdded(Point pointWhereAdded) {
+    if (emptyPoints.contains(pointWhereAdded))
+      emptyPoints.remove(pointWhereAdded);
   }
   
   public TicTacToePieceEntity getPieceForPoint(Point point) {
