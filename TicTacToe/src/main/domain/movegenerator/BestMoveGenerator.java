@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import main.domain.entities.MoveEntity;
 import main.domain.entities.TicTacToeBoardEntity;
@@ -37,39 +36,8 @@ public class BestMoveGenerator implements MoveGenerator {
         
     MoveRating bestMoveRating = getBestMoveRating(moveRatingsForEmptyPoints);
     
-    if (moveRatingIsNeitherWinOrLoss(bestMoveRating)) {
-      List<MoveRating> moveRatingsWithRating0 = getMoveRatingsWithRatingFromListOfMoveRatings(0, moveRatingsForEmptyPoints);
-      
-      if (doAllMoveRatingsHaveSameDepth(moveRatingsWithRating0)) {
-        MoveRating bestMoveRatingForAllRating0 = getMoveRatingWithPoint(new Point(1, 1), moveRatingsWithRating0, moveRatingToPointMapping);
-        if (bestMoveRatingForAllRating0 != null)
-          bestMoveRating = bestMoveRatingForAllRating0;
-        else {
-          List<Point> cornerPoints = new ArrayList<Point>();
-          cornerPoints.add(new Point(0, 0));
-          cornerPoints.add(new Point(0, 2));
-          cornerPoints.add(new Point(2, 0));
-          cornerPoints.add(new Point(2, 2));
-          
-          HashMap<Point, Point> cornerToCornerMapping = new HashMap<Point, Point>();
-          cornerToCornerMapping.put(new Point(0, 0), new Point(2, 2));
-          cornerToCornerMapping.put(new Point(0, 2), new Point(2, 0));
-          cornerToCornerMapping.put(new Point(2, 0), new Point(0, 2));
-          cornerToCornerMapping.put(new Point(2, 2), new Point(0, 0));
-          
-          for (Point cornerPoint : cornerPoints) {
-            if (board.isPointTaken(cornerPoint)) {
-              Point associatedCornerPoint = cornerToCornerMapping.get(cornerPoint);
-              bestMoveRatingForAllRating0 = getMoveRatingWithPoint(associatedCornerPoint, moveRatingsWithRating0, moveRatingToPointMapping);
-              if (bestMoveRatingForAllRating0 != null) {
-                bestMoveRating = bestMoveRatingForAllRating0;
-                break;
-              }
-            }
-          }
-        }
-      }
-    }
+    if (moveRatingIsNeitherWinOrLoss(bestMoveRating))
+      bestMoveRating = getBestMoveRatingWhenBestMoveRatingIsZero(bestMoveRating);
         
     Point pointForBestMoveRating = moveRatingToPointMapping.get(bestMoveRating);
     return new MoveEntity(pieceToPlay, pointForBestMoveRating);
@@ -129,16 +97,26 @@ public class BestMoveGenerator implements MoveGenerator {
     return originalBestMoveRating;
   }
   
-  private MoveRating getMoveRatingWithPoint(Point point, List<MoveRating> moveRatings,
-      Map<MoveRating, Point> moveRatingToPointMapping) {
-    for (MoveRating moveRating : moveRatings)
-      if (moveRatingToPointMapping.get(moveRating).equals(point))
-        return moveRating;
-    return null;
-  }
-  
   private boolean moveRatingIsNeitherWinOrLoss(MoveRating moveRating) {
     return moveRating.getRating() == 0;
+  }
+  
+  private MoveRating getBestMoveRatingWhenBestMoveRatingIsZero(MoveRating originalBestMoveRating) {
+    List<MoveRating> moveRatingsWithRating0 = getMoveRatingsWithRatingFromListOfMoveRatings(0, moveRatingsForEmptyPoints);
+    MoveRating bestMoveRatingWhenBestRatingIs0 = originalBestMoveRating;
+    
+    if (doAllMoveRatingsHaveSameDepth(moveRatingsWithRating0)) {
+      MoveRating bestMoveRatingForAllRating0 = getMoveRatingWithPoint(new Point(1, 1), moveRatingsWithRating0);
+      if (bestMoveRatingForAllRating0 != null)
+        bestMoveRatingWhenBestRatingIs0 = bestMoveRatingForAllRating0;
+      else {
+        MoveRating bestCornerRating = getBestMoveRatingForCornerPoints(moveRatingsWithRating0);
+        if (bestCornerRating != null)
+          bestMoveRatingWhenBestRatingIs0 = bestCornerRating;
+      }
+    }
+    
+    return bestMoveRatingWhenBestRatingIs0;
   }
   
   private List<MoveRating> getMoveRatingsWithRatingFromListOfMoveRatings(int rating, 
@@ -161,6 +139,50 @@ public class BestMoveGenerator implements MoveGenerator {
         return false;
     
     return true;
+  }
+  
+  private MoveRating getBestMoveRatingForCornerPoints(List<MoveRating> moveRatingsWithRating0) {
+    List<Point> cornerPoints = getCornerPoints();
+    HashMap<Point, Point> cornerToCornerMapping = getCornerToCornerMapping();
+    
+    MoveRating bestCornerMoveRating = null;
+    for (Point cornerPoint : cornerPoints) {
+      if (board.isPointTaken(cornerPoint)) {
+        Point associatedCornerPoint = cornerToCornerMapping.get(cornerPoint);
+        MoveRating bestMoveRatingForAllRating0 = getMoveRatingWithPoint(associatedCornerPoint, moveRatingsWithRating0);
+        if (bestMoveRatingForAllRating0 != null) {
+          bestCornerMoveRating = bestMoveRatingForAllRating0;
+          break;
+        }
+      }
+    }
+    
+    return bestCornerMoveRating;
+  }
+  
+  private List<Point> getCornerPoints() {
+    List<Point> cornerPoints = new ArrayList<Point>();
+    cornerPoints.add(new Point(0, 0));
+    cornerPoints.add(new Point(0, 2));
+    cornerPoints.add(new Point(2, 0));
+    cornerPoints.add(new Point(2, 2));
+    return cornerPoints;
+  }
+  
+  private HashMap<Point, Point> getCornerToCornerMapping() {
+    HashMap<Point, Point> cornerToCornerMapping = new HashMap<Point, Point>();
+    cornerToCornerMapping.put(new Point(0, 0), new Point(2, 2));
+    cornerToCornerMapping.put(new Point(0, 2), new Point(2, 0));
+    cornerToCornerMapping.put(new Point(2, 0), new Point(0, 2));
+    cornerToCornerMapping.put(new Point(2, 2), new Point(0, 0));
+    return cornerToCornerMapping;
+  }
+  
+  private MoveRating getMoveRatingWithPoint(Point point, List<MoveRating> moveRatings) {
+    for (MoveRating moveRating : moveRatings)
+      if (moveRatingToPointMapping.get(moveRating).equals(point))
+        return moveRating;
+    return null;
   }
 
 }
