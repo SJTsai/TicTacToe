@@ -27,21 +27,52 @@ public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, T
   public TicTacToeGameSession(BoardFormatter boardFormatter, BoardDisplayer boardDisplayer) {
     this.boardFormatter = boardFormatter;
     this.boardDisplayer = boardDisplayer;
+    
     ticTacToeGameInitializer = new TicTacToeGameInitializer(this, this);
     continuePlaying = true;
     inputScanner = new Scanner(System.in);
   }
   
   public void run() {
-    while (continuePlaying) {
+    while (continuePlaying)
       ticTacToeGameInitializer.initializeGame();
-    }
+  }
+  
+  @Override
+  public void onGameCreated(TicTacToeBoard board, MoveAdder moveAdder) {
+    this.moveAdder = moveAdder;
+    
+    System.out.println("Board created.");
+    displayBoard(board);
+  }
+  
+  @Override
+  public void onPlayerToStart(TicTacToePiece piece) {
+    System.out.println("\nYou are playing as: " + getPieceStringRepresentation(piece) + "\n");
+    Point userChosenPoint = inquireUserForPoint();
+    moveAdder.addMove(userChosenPoint);
+  }
+  
+  @Override
+  public void onComputerToStart(TicTacToePiece piece) {
+    System.out.println("\nComputer (" + getPieceStringRepresentation(piece) + ") is starting...");
+  };
+  
+  private String getPieceStringRepresentation(TicTacToePiece piece) {
+    return piece == TicTacToePiece.X ? "x" : "o";
   }
   
   @Override
   public void onMoveAdded(TicTacToeBoard board, Point pointWhereAdded) {
     displayBoard(board);
     System.out.println("Point added at " + getStringRepresentationOfPoint(pointWhereAdded) + "\n");
+  }
+  
+  private void displayBoard(TicTacToeBoard board) {
+    String boardStringRepresentation = boardFormatter.format(board);
+    TicTacToeBoardViewModel boardViewModel = new TicTacToeBoardViewModel();
+    boardViewModel.setBoardStringRepresentation(boardStringRepresentation);
+    boardDisplayer.display(boardViewModel);
   }
 
   @Override
@@ -64,101 +95,107 @@ public class TicTacToeGameSession implements TicTacToeGameInitializerCallBack, T
   
   private void promptUserToContinueGameOrNot() {    
     boolean didNotInputCorrectResponse = true;
+    String continueResponse = "";
     while (didNotInputCorrectResponse) {
       System.out.print("Would you like to continue playing? (Y/N): ");
-      String continueResponse = inputScanner.nextLine();
-      if (continueResponse.equalsIgnoreCase("y") || continueResponse.equalsIgnoreCase("yes")) {
-        continuePlaying = true;
-        didNotInputCorrectResponse = false;
-        System.out.println();
-      }
-      else if (continueResponse.equalsIgnoreCase("n") || continueResponse.equalsIgnoreCase("no")) {
-        System.out.println("\nThanks for playing.");
-        continuePlaying = false;
-        didNotInputCorrectResponse = false;
-        inputScanner.close();
-      }
+      continueResponse = inputScanner.nextLine();
+      didNotInputCorrectResponse = !isValidResponseToGameContinuationInquiry(continueResponse);
     }
+    handleResponseToGameContinueationInquiry(continueResponse);
+  }
+  
+  private boolean isValidResponseToGameContinuationInquiry(String response) {
+    return response.equalsIgnoreCase("y") ||
+        response.equalsIgnoreCase("n") || 
+        response.equalsIgnoreCase("yes") ||
+        response.equalsIgnoreCase("no");
+  }
+  
+  private void handleResponseToGameContinueationInquiry(String response) {
+    if (doesUserWishesToContinuePlaying(response))
+      handleUserWishesToContinuePlaying();
+    else if (doesUserWishesToStopPlaying(response))
+      handleUserWishesToStopPlaying();
+  }
+  
+  private boolean doesUserWishesToContinuePlaying(String response) {
+    return response.equalsIgnoreCase("y") || response.equalsIgnoreCase("yes");
+  }
+  
+  private void handleUserWishesToContinuePlaying() {
+    continuePlaying = true;
+    System.out.println();
+  }
+  
+  private boolean doesUserWishesToStopPlaying(String response) {
+    return response.equalsIgnoreCase("n") || response.equalsIgnoreCase("no");
+  }
+  
+  private void handleUserWishesToStopPlaying() {
+    continuePlaying = false;
+    System.out.println("\nThanks for playing.");
+    inputScanner.close();
   }
 
   @Override
   public void onPlayerTurn(TicTacToePiece piece) {
-    Point pointInput = getPointInput();
-    moveAdder.addMove(pointInput);
+    Point userChosenPoint = inquireUserForPoint();
+    moveAdder.addMove(userChosenPoint);
   }
 
   @Override
   public void onComputerTurn(TicTacToePiece piece) {
     System.out.println("The computer is thinking...");
   }
-
-  @Override
-  public void onGameCreated(TicTacToeBoard board, MoveAdder moveAdder) {
-    System.out.println("Board created.");
-    displayBoard(board);
-    this.moveAdder = moveAdder;
-  }
-  
-  private void displayBoard(TicTacToeBoard board) {
-    String boardStringRepresentation = boardFormatter.format(board);
-    TicTacToeBoardViewModel boardViewModel = new TicTacToeBoardViewModel();
-    boardViewModel.setBoardStringRepresentation(boardStringRepresentation);
-    boardDisplayer.display(boardViewModel);
-  }
-
-  @Override
-  public void onPlayerToStart(TicTacToePiece piece) {
-    String pieceStringRepresentation = piece == TicTacToePiece.X ? "X" : "O";
-    System.out.println("\nYou are playing as: " + pieceStringRepresentation + "\n");
-    
-    Point pointInput = getPointInput();
-    moveAdder.addMove(pointInput);
-  }
-  
-  @Override
-  public void onComputerToStart(TicTacToePiece piece) {
-    System.out.println("\nComputer (" + getPieceStringRepresentation(piece) + ") is starting...");
-  };
   
   @Override
   public void onPlayerMoveOutOfBounds(Point point) {
     System.out.println("\n" + getStringRepresentationOfPoint(point) + " is out of bounds.  Please choose again.\n");
-    moveAdder.addMove(getPointInput());
+    Point userChosenPoint = inquireUserForPoint();
+    moveAdder.addMove(userChosenPoint);
   }
   
   @Override
   public void onPointTaken(Point point) {
     System.out.println("\n" + getStringRepresentationOfPoint(point) + " is already taken.  Please choose again.\n");
-    moveAdder.addMove(getPointInput());
+    Point userChosenPoint = inquireUserForPoint();
+    moveAdder.addMove(userChosenPoint);
   }
   
   private String getStringRepresentationOfPoint(Point point) {
     return "(" + point.x + ", " + point.y + ")";
   }
   
-  private String getPieceStringRepresentation(TicTacToePiece piece) {
-    return piece == TicTacToePiece.X ? "x" : "o";
-  }
-  
-  private Point getPointInput() {
-    int xCoordinate = 0;
-    int yCoordinate = 0;
+  private Point inquireUserForPoint() {
+    Point userChosenPoint = null;
     boolean inputObtained = false;
     while (!inputObtained) {
       try {
-        System.out.print("It is your turn to play.\nPlease enter x-coordinate: ");
-        xCoordinate = inputScanner.nextInt();
-        inputScanner.nextLine();
-        System.out.print("Please enter y-coordinate: ");
-        yCoordinate = inputScanner.nextInt();
-        inputScanner.nextLine();
+        userChosenPoint = inquireUserForCoordinates();
         inputObtained = true;
       } catch (InputMismatchException inputMismatchException) {
-        inputScanner.nextLine();
-        System.out.println("\nYou must enter an integer.  Please choose a point again.\n");
+        handleUserPointInquiryInputMismatchException();
       }
     }
+    return userChosenPoint;
+  }
+  
+  private Point inquireUserForCoordinates() {
+    int xCoordinate;
+    int yCoordinate;
+    
+    System.out.print("It is your turn to play.\nPlease enter x-coordinate: ");
+    xCoordinate = inputScanner.nextInt();
+    inputScanner.nextLine();
+    System.out.print("Please enter y-coordinate: ");
+    yCoordinate = inputScanner.nextInt();
+    inputScanner.nextLine();
     return new Point(xCoordinate, yCoordinate);
+  }
+  
+  private void handleUserPointInquiryInputMismatchException() {
+    inputScanner.nextLine();
+    System.out.println("\nYou must enter an integer.  Please choose a point again.\n");
   }
   
 }
