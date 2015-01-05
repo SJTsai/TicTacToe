@@ -24,6 +24,8 @@ To run, please follow the steps using one of the options below:
 16. Click the Run button.  The program should have successfully executed.
 
 ##Option 2 - Run the included jar file in terminal or command prompt##
+This option requires the Java platform (JDK) to be installed.  To verify that this is so, open the terminal or command prompt, and type in the following: "java -version".  If the resulting message indicates that it is not installed (i.e. something not found or not installed), please visit Oracle's website [here](http://www.oracle.com/technetwork/java/javase/downloads/index.html), and download (as of 1/5/2015) Java Platform (JDK) 8u25.  Follow the install instructions, and when that is complete, re-open the terminal or command prompt, and type in "java -version" again.  It should now display the version number and a couple other related information.
+
 If you are running a Mac, in the terminal, navigate to the directory containing the TicTacToe.jar file.
 Run the following command: java -jar TicTacToe.jar
 
