@@ -3,7 +3,7 @@ TicTacToe
 
 Tic Tac Toe assignment for 8th Light.
 
-To run, please follow the steps for one of the options below:
+To run, please follow the steps using one of the options below:
 
 ##Option 1 - Importing Eclipse Project from Git##
 1. Create a new Eclipse workspace.
