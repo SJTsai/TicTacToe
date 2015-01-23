@@ -8,54 +8,52 @@ import main.domain.entities.TicTacToePieceEntity;
 public class TicTacToeWinChecker {
   
   private TicTacToePieceEntity referencePiece;
+  private TicTacToeBoardEntity board;
   
   public boolean isWinningStateForPieceOnBoard(TicTacToePieceEntity piece, TicTacToeBoardEntity board) {
     referencePiece = piece;
-    return isWinForColumnOnBoard(0, board) || isWinForColumnOnBoard(1, board) || isWinForColumnOnBoard(2, board) ||
-        isWinForRowOnBoard(0, board) || isWinForRowOnBoard(1, board) || isWinForRowOnBoard(2, board) ||
-        isWinForBackSlashDiagonal(board) || isWinForForwardSlashDiagonal(board);
+    this.board = board;
+    return isWinForColumn(0) || isWinForColumn(1) || isWinForColumn(2) ||
+        isWinForRow(0) || isWinForRow(1) || isWinForRow(2) ||
+        isWinForBackSlashDiagonal() || isWinForForwardSlashDiagonal();
   }
   
-  private boolean isWinForColumnOnBoard(int column, TicTacToeBoardEntity board) {
-    for (int row = 0; row < 2; row++) {
+  private boolean isWinForColumn(int column) {
+    for (int row = 0; row < 3; row++) {
       TicTacToePieceEntity pieceForCurrentRow = board.getPieceForPoint(new Point(row, column));
-      TicTacToePieceEntity pieceForNextRow = board.getPieceForPoint(new Point(row + 1, column));
-      if (isInvalidSetOfPieces(pieceForCurrentRow, pieceForNextRow))
+      if (isInvalidPiece(pieceForCurrentRow))
         return false;
     }
     return true;
   }
   
-  private boolean isInvalidSetOfPieces(TicTacToePieceEntity piece1, TicTacToePieceEntity piece2) {
-    return piece1 != referencePiece || piece2 != referencePiece || piece1 == null || piece2 == null || piece1 != piece2;
+  private boolean isInvalidPiece(TicTacToePieceEntity piece) {
+    return piece == null || piece != referencePiece;
   }
   
-  private boolean isWinForRowOnBoard(int row, TicTacToeBoardEntity board) {
-    for (int column = 0; column < 2; column++) {
+  private boolean isWinForRow(int row) {
+    for (int column = 0; column < 3; column++) {
       TicTacToePieceEntity pieceForCurrentRow = board.getPieceForPoint(new Point(row, column));
-      TicTacToePieceEntity pieceForNextRow = board.getPieceForPoint(new Point(row, column + 1));
-      if (isInvalidSetOfPieces(pieceForCurrentRow, pieceForNextRow))
+      if (isInvalidPiece(pieceForCurrentRow))
         return false;
     }
     return true;
   }
   
-  private boolean isWinForBackSlashDiagonal(TicTacToeBoardEntity board) {
-    for (int rowColumn = 0; rowColumn < 2; rowColumn++) {
+  private boolean isWinForBackSlashDiagonal() {
+    for (int rowColumn = 0; rowColumn < 3; rowColumn++) {
       TicTacToePieceEntity pieceForCurrentRow = board.getPieceForPoint(new Point(rowColumn, rowColumn));
-      TicTacToePieceEntity pieceForNextRow = board.getPieceForPoint(new Point(rowColumn + 1, rowColumn + 1));
-      if (isInvalidSetOfPieces(pieceForCurrentRow, pieceForNextRow))
+      if (isInvalidPiece(pieceForCurrentRow))
         return false;
     }
     return true;
   }
   
-  private boolean isWinForForwardSlashDiagonal(TicTacToeBoardEntity board) {
+  private boolean isWinForForwardSlashDiagonal() {
     int column = 2;
-    for (int row = 0; row < 2; row++) {
+    for (int row = 0; row < 3; row++) {
       TicTacToePieceEntity pieceForCurrentRow = board.getPieceForPoint(new Point(row, column));
-      TicTacToePieceEntity pieceForNextRow = board.getPieceForPoint(new Point(row + 1, column - 1));
-      if (isInvalidSetOfPieces(pieceForCurrentRow, pieceForNextRow))
+      if (isInvalidPiece(pieceForCurrentRow))
         return false;
       column--;
     }
