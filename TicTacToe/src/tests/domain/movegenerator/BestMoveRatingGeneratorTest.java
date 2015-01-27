@@ -1,6 +1,6 @@
 package tests.domain.movegenerator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Point;
 
@@ -8,9 +8,6 @@ import main.domain.entities.MoveEntity;
 import main.domain.entities.TicTacToeBoardEntity;
 import main.domain.entities.TicTacToePieceEntity;
 import main.domain.movegenerator.BestMoveRatingGenerator;
-import main.domain.movegenerator.interfaces.MoveRatingGenerator;
-import main.domain.verification.DefaultCheckRowColumnVerifier;
-import main.domain.verification.DefaultWinnerVerifier;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,12 +15,12 @@ import org.junit.Test;
 public class BestMoveRatingGeneratorTest {
   
   private TicTacToeBoardEntity board;
-  private MoveRatingGenerator bestMoveRatingGenerator;
+  private BestMoveRatingGenerator bestMoveRatingGenerator;
   
   @Before
   public void setUp() {
     board = new TicTacToeBoardEntity();
-    bestMoveRatingGenerator = new BestMoveRatingGenerator(new DefaultWinnerVerifier(new DefaultCheckRowColumnVerifier()));
+    bestMoveRatingGenerator = new BestMoveRatingGenerator();
   }
 
   @Test

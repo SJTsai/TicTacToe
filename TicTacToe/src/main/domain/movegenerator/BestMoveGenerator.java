@@ -9,18 +9,17 @@ import main.domain.entities.MoveEntity;
 import main.domain.entities.TicTacToeBoardEntity;
 import main.domain.entities.TicTacToePieceEntity;
 import main.domain.movegenerator.interfaces.MoveGenerator;
-import main.domain.movegenerator.interfaces.MoveRatingGenerator;
 
 public class BestMoveGenerator implements MoveGenerator {
   
   private TicTacToeBoardEntity board;
   private TicTacToePieceEntity pieceToPlay;
-  private MoveRatingGenerator moveRatingGenerator;
+  private BestMoveRatingGenerator bestMoveRatingGenerator;
   private List<MoveRating> moveRatingsForEmptyPoints;
   private HashMap<MoveRating, Point> moveRatingToPointMapping;
   
-  public BestMoveGenerator(MoveRatingGenerator moveRatingGenerator) {
-    this.moveRatingGenerator = moveRatingGenerator;
+  public BestMoveGenerator() {
+    bestMoveRatingGenerator = new BestMoveRatingGenerator();
   }
 
   @Override
@@ -46,7 +45,7 @@ public class BestMoveGenerator implements MoveGenerator {
   private void updateMoveRatingsAndAssociatedMappedPointsForEmptyPoints(List<Point> emptyPoints) {
     for (Point emptyPoint : emptyPoints) {
       MoveEntity testMove = new MoveEntity(pieceToPlay, emptyPoint);
-      MoveRating moveRatingForEmptyPoint = moveRatingGenerator.getMoveRating(board, testMove);
+      MoveRating moveRatingForEmptyPoint = bestMoveRatingGenerator.getMoveRating(board, testMove);
       moveRatingsForEmptyPoints.add(moveRatingForEmptyPoint);
       moveRatingToPointMapping.put(moveRatingForEmptyPoint, emptyPoint);
     }

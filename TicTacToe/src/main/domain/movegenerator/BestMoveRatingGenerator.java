@@ -4,21 +4,19 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.checker.TicTacToeWinChecker;
 import main.domain.entities.MoveEntity;
 import main.domain.entities.TicTacToeBoardEntity;
 import main.domain.entities.TicTacToePieceEntity;
-import main.domain.movegenerator.interfaces.MoveRatingGenerator;
-import main.domain.verification.interfaces.WinnerVerifier;
 
-public class BestMoveRatingGenerator implements MoveRatingGenerator {
+public class BestMoveRatingGenerator {
   
-  private WinnerVerifier winnerVerifier;
+  private TicTacToeWinChecker winChecker;
   
-  public BestMoveRatingGenerator(WinnerVerifier winnerVerifier) {
-    this.winnerVerifier = winnerVerifier;
+  public BestMoveRatingGenerator() {
+    winChecker = new TicTacToeWinChecker();
   }
-
-  @Override
+  
   public MoveRating getMoveRating(TicTacToeBoardEntity board, MoveEntity testMove) {
     return getBestMoveRating(board, testMove, 0);
   }
@@ -27,7 +25,7 @@ public class BestMoveRatingGenerator implements MoveRatingGenerator {
     TicTacToeBoardEntity boardClone = new TicTacToeBoardEntity(board);
     boardClone.addMove(testMove);
     
-    if (winnerVerifier.verifyWinForBoardAndLastMoveMade(boardClone, testMove))
+    if (winChecker.isWinningStateForMoveOnBoard(testMove, boardClone))
       return new MoveRating(getRatingForWinningMoveWithDepth(depth), depth);
     
     if (boardClone.isFull())

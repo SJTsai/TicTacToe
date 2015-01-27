@@ -11,7 +11,6 @@ import main.domain.models.TicTacToeBoard;
 import main.domain.models.mappers.TicTacToeBoardMapper;
 import main.domain.models.mappers.TicTacToePieceMapper;
 import main.domain.movegenerator.BestMoveGenerator;
-import main.domain.movegenerator.BestMoveRatingGenerator;
 import main.domain.movegenerator.interfaces.MoveGenerator;
 import main.domain.verification.DefaultCheckRowColumnVerifier;
 import main.domain.verification.DefaultWinnerVerifier;
@@ -64,7 +63,7 @@ public class TicTacToeGameInitializer implements GameInitializer {
   }
   
   private MoveGenerator getMoveGenerator() {
-    return new BestMoveGenerator(new BestMoveRatingGenerator(getWinnerVerifier()));
+    return new BestMoveGenerator();
   }
   
   private WinnerVerifier getWinnerVerifier() {

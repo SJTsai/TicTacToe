@@ -1,6 +1,7 @@
 package tests.domain.movegenerator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -10,13 +11,7 @@ import main.domain.entities.MoveEntity;
 import main.domain.entities.TicTacToeBoardEntity;
 import main.domain.entities.TicTacToePieceEntity;
 import main.domain.movegenerator.BestMoveGenerator;
-import main.domain.movegenerator.BestMoveRatingGenerator;
 import main.domain.movegenerator.interfaces.MoveGenerator;
-import main.domain.movegenerator.interfaces.MoveRatingGenerator;
-import main.domain.verification.DefaultCheckRowColumnVerifier;
-import main.domain.verification.DefaultWinnerVerifier;
-import main.domain.verification.interfaces.CheckRowColumnVerifier;
-import main.domain.verification.interfaces.WinnerVerifier;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,12 +24,7 @@ public class BestMoveGeneratorTest {
   @Before
   public void setUp() {
     board = new TicTacToeBoardEntity();
-    
-    CheckRowColumnVerifier defaultCheckRowColumnVerifier = new DefaultCheckRowColumnVerifier();
-    WinnerVerifier defaultWinnerVerifier = new DefaultWinnerVerifier(defaultCheckRowColumnVerifier);
-    MoveRatingGenerator bestMoveRatingGenerator = new BestMoveRatingGenerator(defaultWinnerVerifier);
-    
-    bestMoveGenerator = new BestMoveGenerator(bestMoveRatingGenerator);
+    bestMoveGenerator = new BestMoveGenerator();
   }
   
   @Test

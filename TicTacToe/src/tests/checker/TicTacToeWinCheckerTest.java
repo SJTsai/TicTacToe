@@ -25,7 +25,9 @@ public class TicTacToeWinCheckerTest {
 
   @Test
   public void testEmptyBoardIsNotWinningStateForAnyPiece() {
-    assertFalse(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    for (int row = 0; row < 3; row++)
+      for (int column = 0; column < 3; column++)
+        assertFalse(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(TicTacToePieceEntity.X, new Point(row, column)), board));
   }
   
   @Test
@@ -34,7 +36,7 @@ public class TicTacToeWinCheckerTest {
     board.addMove(new MoveEntity(pieceToAdd, new Point(0, 0)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(1, 0)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(2, 0)));
-    assertTrue(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    assertTrue(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(pieceToAdd, new Point(2, 0)), board));
   }
   
   @Test
@@ -43,7 +45,7 @@ public class TicTacToeWinCheckerTest {
     board.addMove(new MoveEntity(pieceToAdd, new Point(0, 1)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(1, 1)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(2, 1)));
-    assertTrue(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    assertTrue(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(pieceToAdd, new Point(2, 1)), board));
   }
   
   @Test
@@ -52,7 +54,7 @@ public class TicTacToeWinCheckerTest {
     board.addMove(new MoveEntity(pieceToAdd, new Point(0, 2)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(1, 2)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(2, 2)));
-    assertTrue(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    assertTrue(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(pieceToAdd, new Point(2, 2)), board));
   }
   
   @Test
@@ -61,7 +63,7 @@ public class TicTacToeWinCheckerTest {
     board.addMove(new MoveEntity(pieceToAdd, new Point(0, 0)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(0, 1)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(0, 2)));
-    assertTrue(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    assertTrue(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(pieceToAdd, new Point(0, 2)), board));
   }
   
   @Test
@@ -70,7 +72,7 @@ public class TicTacToeWinCheckerTest {
     board.addMove(new MoveEntity(pieceToAdd, new Point(1, 0)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(1, 1)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(1, 2)));
-    assertTrue(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    assertTrue(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(pieceToAdd, new Point(1, 2)), board));
   }
   
   @Test
@@ -79,7 +81,7 @@ public class TicTacToeWinCheckerTest {
     board.addMove(new MoveEntity(pieceToAdd, new Point(2, 0)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(2, 1)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(2, 2)));
-    assertTrue(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    assertTrue(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(pieceToAdd, new Point(2, 2)), board));
   }
   
   @Test
@@ -88,7 +90,7 @@ public class TicTacToeWinCheckerTest {
     board.addMove(new MoveEntity(pieceToAdd, new Point(0, 0)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(1, 1)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(2, 2)));
-    assertTrue(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    assertTrue(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(pieceToAdd, new Point(2, 2)), board));
   }
   
   @Test
@@ -97,7 +99,7 @@ public class TicTacToeWinCheckerTest {
     board.addMove(new MoveEntity(pieceToAdd, new Point(0, 2)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(1, 1)));
     board.addMove(new MoveEntity(pieceToAdd, new Point(2, 0)));
-    assertTrue(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    assertTrue(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(pieceToAdd, new Point(2, 0)), board));
   }
   
   @Test
@@ -111,7 +113,7 @@ public class TicTacToeWinCheckerTest {
     board.addMove(new MoveEntity(xPiece, new Point(0, 0)));
     board.addMove(new MoveEntity(oPiece, new Point(1, 0)));
     board.addMove(new MoveEntity(xPiece, new Point(2, 2)));
-    assertTrue(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    assertTrue(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(xPiece, new Point(2, 2)), board));
   }
   
   @Test
@@ -124,7 +126,7 @@ public class TicTacToeWinCheckerTest {
     board.addMove(new MoveEntity(oPiece, new Point(0, 2)));
     board.addMove(new MoveEntity(xPiece, new Point(0, 0)));
     board.addMove(new MoveEntity(oPiece, new Point(1, 0)));
-    assertFalse(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    assertFalse(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(xPiece, new Point(0, 0)), board));
   }
   
   @Test
@@ -134,7 +136,7 @@ public class TicTacToeWinCheckerTest {
     board.addMove(new MoveEntity(xPiece, new Point(0, 0)));
     board.addMove(new MoveEntity(xPiece, new Point(1, 1)));
     board.addMove(new MoveEntity(oPiece, new Point(2, 2)));
-    assertFalse(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    assertFalse(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(xPiece, new Point(1, 1)), board));
   }
   
   @Test
@@ -142,7 +144,7 @@ public class TicTacToeWinCheckerTest {
     TicTacToePieceEntity xPiece = TicTacToePieceEntity.X;
     board.addMove(new MoveEntity(xPiece, new Point(0, 0)));
     board.addMove(new MoveEntity(xPiece, new Point(1, 1)));
-    assertFalse(winChecker.isWinningStateForPieceOnBoard(TicTacToePieceEntity.X, board));
+    assertFalse(winChecker.isWinningStateForMoveOnBoard(new MoveEntity(xPiece, new Point(1, 1)), board));
   }
 
 }

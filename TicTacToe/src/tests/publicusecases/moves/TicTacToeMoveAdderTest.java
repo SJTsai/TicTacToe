@@ -1,6 +1,8 @@
 package tests.publicusecases.moves;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Point;
 
@@ -12,7 +14,6 @@ import main.domain.keepers.interfaces.TurnKeeper;
 import main.domain.models.TicTacToeBoard;
 import main.domain.models.TicTacToePiece;
 import main.domain.movegenerator.BestMoveGenerator;
-import main.domain.movegenerator.BestMoveRatingGenerator;
 import main.domain.movegenerator.interfaces.MoveGenerator;
 import main.domain.verification.DefaultCheckRowColumnVerifier;
 import main.domain.verification.DefaultWinnerVerifier;
@@ -48,7 +49,7 @@ public class TicTacToeMoveAdderTest implements TicTacToeMoveAdderCallBack {
     
     WinnerVerifier defaultWinnerVerifier = new DefaultWinnerVerifier(new DefaultCheckRowColumnVerifier());
     
-    MoveGenerator bestMoveGenerator = new BestMoveGenerator(new BestMoveRatingGenerator(defaultWinnerVerifier));
+    MoveGenerator bestMoveGenerator = new BestMoveGenerator();
     
     ticTacToeMoveAdder = new TicTacToeMoveAdder(boardEntity, alternatingTurnKeeper, defaultWinnerVerifier, bestMoveGenerator, this);
     

@@ -99,5 +99,14 @@ public class DefaultWinnerVerifierTest {
     board.addMove(new MoveEntity(TicTacToePieceEntity.X, new Point(2, 0)));
     assertTrue(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(board, moveToVerifyWin));
   }
+  
+  @Test
+  public void testBoardIsNotInWinningStateFor2Xs() {
+    TicTacToePieceEntity xPiece = TicTacToePieceEntity.X;
+    MoveEntity moveToVerifyWin = new MoveEntity(xPiece, new Point(1, 1));
+    board.addMove(new MoveEntity(xPiece, new Point(0, 0)));
+    board.addMove(moveToVerifyWin);
+    assertFalse(defaultWinnerVerifier.verifyWinForBoardAndLastMoveMade(board, moveToVerifyWin));
+  }
 
 }
