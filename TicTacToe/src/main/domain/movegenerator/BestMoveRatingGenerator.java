@@ -13,6 +13,10 @@ public class BestMoveRatingGenerator {
   
   private TicTacToeWinChecker winChecker;
   
+  private final int RATING_FOR_TIE = 0;
+  private final int RATING_FOR_CURRENT_PLAYER = 1;
+  private final int RATING_FOR_OPPOSING_PLAYER = -1;
+  
   public BestMoveRatingGenerator() {
     winChecker = new TicTacToeWinChecker();
   }
@@ -29,22 +33,24 @@ public class BestMoveRatingGenerator {
       return new MoveRating(getRatingForWinningMoveWithDepth(depth), depth);
     
     if (boardClone.isFull())
-      return new MoveRating(getRatingForTie(), depth);
+      return new MoveRating(RATING_FOR_TIE, depth);
     
     List<MoveRating> moveRatings = new ArrayList<MoveRating>();
     TicTacToePieceEntity nextPieceToMove = getOpposingPieceWithRespectToPiece(testMove.getPiece());
-    for (Point emptyPoint : boardClone.getEmptyPointsClone())
-      moveRatings.add(getBestMoveRating(boardClone, new MoveEntity(nextPieceToMove, emptyPoint), depth + 1));
+    for (Point emptyPoint : boardClone.getEmptyPointsClone()) {
+      int depthForNextPlayer = depth + 1;
+      moveRatings.add(getBestMoveRating(boardClone, new MoveEntity(nextPieceToMove, emptyPoint), depthForNextPlayer));
+    }
     
     return getBestMoveRatingFromListOfMoveRatingsForAssociatedDepth(moveRatings, depth);
   }
   
   private int getRatingForWinningMoveWithDepth(int depth) {
-    return depth % 2 == 0 ? 1 : -1;
+    return isCurrentPlayerForDepth(depth) ? RATING_FOR_CURRENT_PLAYER : RATING_FOR_OPPOSING_PLAYER;
   }
   
-  private int getRatingForTie() {
-    return 0;
+  private boolean isCurrentPlayerForDepth(int depth) {
+    return depth % 2 == 0;
   }
   
   private TicTacToePieceEntity getOpposingPieceWithRespectToPiece(TicTacToePieceEntity piece) {
