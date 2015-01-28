@@ -1,33 +1,34 @@
 package tests.players;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Point;
-
-import main.domain.entities.MoveEntity;
-import main.domain.entities.TicTacToeBoardEntity;
-import main.domain.entities.TicTacToePieceEntity;
-import main.players.TicTacToePlayer;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import ttt.model.TicTacToeBoard;
+import ttt.model.TicTacToePiece;
+import ttt.player.TicTacToePlayer;
+
 public class TicTacToePlayerTest {
   
-  private TicTacToeBoardEntity board;
+  private TicTacToeBoard board;
   private TicTacToePlayer player;
 
   @Before
   public void setUp() throws Exception {
-    board = new TicTacToeBoardEntity();
-    player = new TicTacToePlayer(TicTacToePieceEntity.X, board, false);
+    board = new TicTacToeBoard();
+    player = new TicTacToePlayer(TicTacToePiece.X, board, false);
   }
 
   @Test
   public void testPieceIsRecordedProperly() {
     Point pointToTake = new Point(1, 1);
     player.makeMoveAtPoint(pointToTake);
-    assertEquals(TicTacToePieceEntity.X, board.getPieceForPoint(pointToTake));
+    assertEquals(TicTacToePiece.X, board.getPieceForPoint(pointToTake));
     assertTrue(board.doXPointsContainPoint(pointToTake));
     assertFalse(board.isEmpty());
     assertEquals(1, board.getNumberOfXPiecesOnTheBoard());
